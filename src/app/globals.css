@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-navy-dark: #0d1526;
+  --color-navy: #1a2744;
+  --color-navy-mid: #243352;
+  --color-gold: #c9a84c;
+  --color-gold-light: #e8d5a3;
+  --color-gold-pale: #f7f0e0;
+  --color-cream: #f5f0e8;
+  --color-site-white: #faf9f7;
+  --color-site-text: #1a1a2a;
+  --color-site-border: #e2ddd4;
+  --color-site-gray: #888888;
+  --color-site-gray-dark: #3a3a4a;
+  --color-site-gray-light: #cccccc;
+
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+
+  --animate-ticker: ticker 25s linear infinite;
+  --animate-fade-up: fadeUp 0.4s ease forwards;
+  --animate-toast-in: toastIn 0.3s ease;
+  --animate-toast-out: toastOut 0.3s ease 2s forwards;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes toastIn {
+  from { opacity: 0; bottom: 60px; }
+  to { opacity: 1; bottom: 80px; }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Base styles */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #faf9f7;
+  color: #1a1a2a;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 4rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+h3 { font-size: 1.3rem; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f5f0e8; }
+::-webkit-scrollbar-thumb { background: #e8d5a3; border-radius: 3px; }
+
+/* Container utility */
+.container-site {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+@media (max-width: 768px) {
+  .container-site {
+    padding: 0 16px;
+  }
 }
