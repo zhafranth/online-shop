@@ -9,7 +9,7 @@ export function UspStrip() {
   return (
     <div className="bg-navy py-10">
       <div className="container-site">
-        <div className="grid grid-cols-4 gap-6 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {USPS.map(({ icon, title, sub }) => (
             <div key={title}>
               <div className="text-2xl mb-2">{icon}</div>

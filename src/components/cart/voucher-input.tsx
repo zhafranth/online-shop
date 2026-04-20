@@ -21,7 +21,7 @@ export function VoucherInput({ subtotal, onApplyDiscount }: VoucherInputProps) {
   return (
     <div className="p-5 border-[1.5px] border-dashed border-site-border mb-8">
       <div className="text-[13px] font-semibold mb-2.5">🎫 Kode Voucher</div>
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <input type="text" placeholder="Masukkan kode voucher..." value={voucher} onChange={(e) => setVoucher(e.target.value)} className="flex-1 px-4 py-3 border-[1.5px] border-site-border bg-white font-sans text-sm text-site-text outline-none focus:border-navy" />
         <Button variant="primary" onClick={applyVoucher}>Pakai</Button>
       </div>

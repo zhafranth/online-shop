@@ -30,15 +30,15 @@ export default function CartPage() {
   return (
     <div className="min-h-screen pt-[72px] animate-fade-up">
       <Navbar />
-      <div className="bg-cream py-6 border-b border-site-border">
+      <div className="bg-cream py-5 md:py-6 border-b border-site-border">
         <div className="container-site">
-          <h1 className="font-serif font-normal text-[28px]">Keranjang Belanja {items.length > 0 && `(${items.length})`}</h1>
+          <h1 className="font-serif font-normal text-2xl md:text-[28px]">Keranjang Belanja {items.length > 0 && `(${items.length})`}</h1>
         </div>
       </div>
-      <div className="bg-white border-b border-site-border py-4">
-        <div className="container-site"><div className="max-w-[500px]"><StepBar steps={steps} /></div></div>
+      <div className="bg-white border-b border-site-border py-4 overflow-x-auto">
+        <div className="container-site"><div className="max-w-[500px] min-w-[360px]"><StepBar steps={steps} /></div></div>
       </div>
-      <div className="container-site py-10 pb-[120px]">
+      <div className="container-site py-6 md:py-10 pb-[140px] md:pb-[120px]">
         {items.length === 0 ? (
           <div className="text-center py-20">
             <div className="font-serif text-[28px] mb-3">Keranjang kosong</div>

@@ -18,11 +18,11 @@ export function ProductGrid({ products }: ProductGridProps) {
     );
   }
   return (
-    <div className="grid grid-cols-3 gap-7">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-7">
       {products.map((p) => (
         <Link key={p.id} href={`/product/${p.id}`} className="group cursor-pointer block no-underline text-site-text">
           <div className="overflow-hidden relative">
-            <PlaceholderImage label={p.label} className="w-full h-[260px] transition-transform duration-400 group-hover:scale-[1.04]" />
+            <PlaceholderImage label={p.label} className="w-full h-[220px] sm:h-[240px] md:h-[260px] transition-transform duration-400 group-hover:scale-[1.04]" />
             <div className="absolute top-2.5 right-2.5 w-8 h-8 bg-white/90 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">♡</div>
             {p.badge && (
               <Badge variant={p.badge === "SALE" ? "default" : "navy"} className={`absolute top-2.5 left-2.5 ${p.badge === "SALE" ? "border-gold text-gold bg-white" : ""}`}>{p.badge}</Badge>

@@ -6,12 +6,12 @@ interface OrderSummaryProps { items: CartItem[]; subtotal: number; ongkir: numbe
 
 export function OrderSummary({ items, subtotal, ongkir, isFreeShipping, total }: OrderSummaryProps) {
   return (
-    <div className="sticky top-[90px] self-start">
+    <div className="lg:sticky lg:top-[90px] self-start">
       <div className="border-[1.5px] border-site-border bg-white">
-        <div className="px-5 py-4 border-b border-site-border bg-navy text-white">
+        <div className="px-4 sm:px-5 py-4 border-b border-site-border bg-navy text-white">
           <div className="font-semibold tracking-[0.06em] text-[13px]">RINGKASAN PESANAN</div>
         </div>
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           {items.slice(0, 3).map((item, i) => (
             <div key={i} className="flex gap-3 mb-3.5 items-center">
               <PlaceholderImage label={item.label} className="w-[50px] h-[60px] shrink-0" />

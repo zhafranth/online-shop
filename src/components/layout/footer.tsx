@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
-    <footer className="bg-navy-dark text-white/60 pt-[60px] pb-[30px]">
+    <footer className="bg-navy-dark text-white/60 pt-12 md:pt-[60px] pb-[30px]">
       <div className="container-site">
-        <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-12">
-          <div>
-            <div className="font-serif text-[28px] font-bold text-gold mb-3">VESTIRE</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 md:gap-10 mb-10 md:mb-12">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="font-serif text-2xl md:text-[28px] font-bold text-gold mb-3">VESTIRE</div>
             <p className="text-[13px] leading-[1.8] max-w-[260px]">Mode terpilih untuk semua. Kualitas premium, harga terjangkau, dikirim ke seluruh Indonesia.</p>
             <div className="flex gap-3 mt-5">
               {["IG", "TK", "FB", "YT"].map((s) => (
@@ -36,7 +36,7 @@ export function Footer() {
             </div>
           </div>
         </div>
-        <div className="border-t border-white/10 pt-6 flex justify-between text-xs">
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row gap-2 sm:gap-4 sm:justify-between text-xs">
           <span>© 2026 VESTIRE. All rights reserved.</span>
           <span>Privacy Policy · Terms of Service</span>
         </div>

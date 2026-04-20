@@ -27,7 +27,7 @@ interface SidebarFilterProps {
 
 export function SidebarFilter({ activeCat, activeSizes, activeColors, maxPrice, onCatChange, onSizeToggle, onColorToggle, onPriceChange, onReset, hasActiveFilters }: SidebarFilterProps) {
   return (
-    <aside className="sticky top-[90px] self-start">
+    <aside className="lg:sticky lg:top-[90px] self-start">
       {/* Category */}
       <div className="mb-8">
         <div className="text-[11px] font-semibold tracking-[0.14em] uppercase text-navy mb-3.5 pb-2.5 border-b border-site-border">Kategori</div>

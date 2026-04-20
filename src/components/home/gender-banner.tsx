@@ -9,15 +9,15 @@ const BANNERS = [
 
 export function GenderBanner() {
   return (
-    <section className="grid grid-cols-2">
+    <section className="grid grid-cols-1 md:grid-cols-2">
       {BANNERS.map(({ label, desc, cat, overlay }) => (
-        <Link key={cat} href={`/catalog?cat=${cat}`} className="relative h-[380px] cursor-pointer overflow-hidden block group">
+        <Link key={cat} href={`/catalog?cat=${cat}`} className="relative h-[280px] md:h-[380px] cursor-pointer overflow-hidden block group">
           <PlaceholderImage label={`${cat.toLowerCase()} campaign`} className="absolute inset-0 w-full h-full" />
           <div className="absolute inset-0" style={{ background: overlay }} />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center">
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center px-6">
             <div className="text-[11px] tracking-[0.2em] uppercase text-gold mb-3">Koleksi {label.split(" ")[1]}</div>
-            <h2 className="font-serif font-normal text-[40px] mb-2">{label}</h2>
-            <p className="text-[13px] text-white/70 mb-7">{desc}</p>
+            <h2 className="font-serif font-normal text-3xl md:text-[40px] mb-2">{label}</h2>
+            <p className="text-[13px] text-white/70 mb-6 md:mb-7">{desc}</p>
             <Button variant="outline-white" size="sm">Explore →</Button>
           </div>
         </Link>

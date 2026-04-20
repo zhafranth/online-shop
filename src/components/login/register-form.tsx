@@ -23,7 +23,7 @@ export function RegisterForm({ onSwitchTab, onSuccess }: RegisterFormProps) {
       <div className="font-serif text-[22px] mb-1.5">Buat akun baru</div>
       <div className="text-[13px] text-site-gray mb-6">Bergabunglah dengan komunitas VESTIRE</div>
       {msg && <div className={`px-3.5 py-2.5 text-[13px] mb-4 border ${msg.includes("berhasil") ? "bg-[#f0fdf4] text-[#166534] border-[#bbf7d0]" : "bg-[#fef2f2] text-[#991b1b] border-[#fecaca]"}`}>{msg}</div>}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Input label="Nama Depan" placeholder="Ahmad" value={form.nama} onChange={(e) => upd("nama", e.target.value)} />
         <Input label="Nama Belakang" placeholder="Fauzi" value={form.namaAkhir} onChange={(e) => upd("namaAkhir", e.target.value)} />
       </div>

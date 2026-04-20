@@ -37,16 +37,16 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen pt-[72px] animate-fade-up">
       <Navbar />
-      <div className="bg-cream py-6 border-b border-site-border">
+      <div className="bg-cream py-5 md:py-6 border-b border-site-border">
         <div className="container-site">
-          <div className="flex items-center justify-between">
-            <h1 className="font-serif font-normal text-[28px]">Checkout</h1>
-            <div className="text-xs text-site-gray flex items-center gap-1.5"><span>🔒</span> Pembayaran Aman & Terenkripsi</div>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h1 className="font-serif font-normal text-2xl md:text-[28px]">Checkout</h1>
+            <div className="text-xs text-site-gray flex items-center gap-1.5"><span>🔒</span> <span className="hidden sm:inline">Pembayaran Aman & Terenkripsi</span><span className="sm:hidden">Aman & Terenkripsi</span></div>
           </div>
         </div>
       </div>
-      <div className="container-site py-10 pb-[60px]">
-        <div className="grid grid-cols-[1fr_360px] gap-12">
+      <div className="container-site py-6 md:py-10 pb-12 md:pb-[60px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12">
           <div>
             <AddressSection isOpen={open === "address"} isDone={done.address} form={form} onToggle={() => toggle("address")} onUpdate={(k, v) => setForm((f) => ({ ...f, [k]: v }))} onSave={() => { setDone((d) => ({ ...d, address: true })); setOpen("shipping"); }} />
             <ShippingSection isOpen={open === "shipping"} isDone={done.shipping} selected={shipping} isFreeShipping={isFreeShipping} onToggle={() => toggle("shipping")} onSelect={setShipping} onSave={() => { setDone((d) => ({ ...d, shipping: true })); setOpen("payment"); }} />
@@ -55,7 +55,9 @@ export default function CheckoutPage() {
               {placing ? "⏳ Memproses..." : `🔒 Bayar Sekarang — ${formatPrice(total)}`}
             </Button>
           </div>
-          <OrderSummary items={items} subtotal={sub} ongkir={ongkir} isFreeShipping={isFreeShipping} total={total} />
+          <div className="order-first lg:order-none">
+            <OrderSummary items={items} subtotal={sub} ongkir={ongkir} isFreeShipping={isFreeShipping} total={total} />
+          </div>
         </div>
       </div>
       <Toast />

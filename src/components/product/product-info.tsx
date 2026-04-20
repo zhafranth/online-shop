@@ -28,15 +28,15 @@ export function ProductInfo({ product: p }: ProductInfoProps) {
   const discountPct = p.originalPrice ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
 
   return (
-    <div className="sticky top-[90px]">
+    <div className="lg:sticky lg:top-[90px]">
       {p.badge && <Badge className="mb-3">{p.badge}</Badge>}
-      <h1 className="font-serif font-normal text-[32px] leading-[1.2] mb-1.5">{p.name}</h1>
+      <h1 className="font-serif font-normal text-2xl md:text-[32px] leading-[1.2] mb-1.5">{p.name}</h1>
       <div className="flex items-center gap-2 mb-4 text-[13px]">
         <span className="text-gold">★★★★★</span>
         <span className="text-site-gray">4.9 (128 ulasan)</span>
       </div>
-      <div className="flex items-baseline gap-2.5 mb-6 pb-6 border-b border-site-border">
-        <span className="font-serif text-[28px] font-semibold text-navy">{formatPrice(p.price)}</span>
+      <div className="flex items-baseline gap-2.5 mb-6 pb-6 border-b border-site-border flex-wrap">
+        <span className="font-serif text-2xl md:text-[28px] font-semibold text-navy">{formatPrice(p.price)}</span>
         {p.originalPrice && (
           <>
             <span className="text-base text-site-gray line-through">{formatPrice(p.originalPrice)}</span>
