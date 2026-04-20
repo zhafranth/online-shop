@@ -28,7 +28,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
       </div>
-      <div className="container-site py-12 px-10">
+      <div className="container-site py-12">
         <div className="grid grid-cols-[1fr_440px] gap-[60px] items-start">
           <ImageGallery label={product.label} selectedColor={product.colors[0]} />
           <ProductInfo product={product} />

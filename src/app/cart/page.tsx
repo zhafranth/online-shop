@@ -38,7 +38,7 @@ export default function CartPage() {
       <div className="bg-white border-b border-site-border py-4">
         <div className="container-site"><div className="max-w-[500px]"><StepBar steps={steps} /></div></div>
       </div>
-      <div className="container-site py-10 px-10 pb-[120px]">
+      <div className="container-site py-10 pb-[120px]">
         {items.length === 0 ? (
           <div className="text-center py-20">
             <div className="font-serif text-[28px] mb-3">Keranjang kosong</div>

@@ -45,7 +45,7 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
-      <div className="container-site py-10 px-10 pb-[60px]">
+      <div className="container-site py-10 pb-[60px]">
         <div className="grid grid-cols-[1fr_360px] gap-12">
           <div>
             <AddressSection isOpen={open === "address"} isDone={done.address} form={form} onToggle={() => toggle("address")} onUpdate={(k, v) => setForm((f) => ({ ...f, [k]: v }))} onSave={() => { setDone((d) => ({ ...d, address: true })); setOpen("shipping"); }} />

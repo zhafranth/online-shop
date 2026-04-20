@@ -9,7 +9,7 @@ export function ProductTabs({ product: p }: ProductTabsProps) {
   const tabs = [{ id: "desc", label: "Deskripsi" }, { id: "material", label: "Material & Perawatan" }, { id: "review", label: "Ulasan (128)" }];
 
   return (
-    <div className="container-site px-10 pb-[60px]">
+    <div className="container-site pb-[60px]">
       <div className="flex border-b-2 border-site-border mb-7">
         {tabs.map(({ id, label }) => (
           <div key={id} onClick={() => setActiveTab(id)} className={`px-6 py-3 text-[13px] font-medium cursor-pointer tracking-[0.04em] -mb-[2px] border-b-2 ${activeTab === id ? "border-navy text-navy" : "border-transparent text-site-gray"}`}>{label}</div>

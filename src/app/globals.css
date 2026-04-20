@@ -44,43 +44,51 @@
   to { opacity: 0; }
 }
 
-/* Base styles */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Base styles — inside @layer base so Tailwind utilities can override */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; }
 
-body {
-  background: #faf9f7;
-  color: #1a1a2a;
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  body {
+    font-family: var(--font-sans);
+    background: #faf9f7;
+    color: #1a1a2a;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-cormorant), Georgia, serif;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  h1 { font-size: clamp(2rem, 5vw, 4rem); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+  h3 { font-size: 1.3rem; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #f5f0e8; }
+  ::-webkit-scrollbar-thumb { background: #e8d5a3; border-radius: 3px; }
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-h1 { font-size: clamp(2rem, 5vw, 4rem); }
-h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
-h3 { font-size: 1.3rem; }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: #f5f0e8; }
-::-webkit-scrollbar-thumb { background: #e8d5a3; border-radius: 3px; }
-
-/* Container utility */
-.container-site {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-@media (max-width: 768px) {
+/* Container utility — inside @layer components so Tailwind utilities can override */
+@layer components {
   .container-site {
-    padding: 0 16px;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .container-site {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
   }
 }
