@@ -8,6 +8,9 @@ export interface Product {
   colors: string[];
   badge: "NEW" | "BEST SELLER" | "SALE" | null;
   label: string;
+  image: string;
+  description: string;
+  stock: number;
 }
 
 export interface CartItem extends Product {
