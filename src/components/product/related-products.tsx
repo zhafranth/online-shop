@@ -14,7 +14,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
           {products.map((rp) => (
             <Link key={rp.id} href={`/product/${rp.id}`} className="group cursor-pointer block no-underline text-site-text">
               <div className="overflow-hidden">
-                <PlaceholderImage label={rp.label} className="w-full h-[180px] md:h-[200px] transition-transform duration-400 group-hover:scale-[1.04]" />
+                <PlaceholderImage src={rp.image} alt={rp.name} label={rp.label} sizes="(max-width: 768px) 50vw, 25vw" className="w-full h-[180px] md:h-[200px] transition-transform duration-400 group-hover:scale-[1.04]" />
               </div>
               <div className="pt-3">
                 <div className="font-serif text-[0.9rem] font-medium mb-1">{rp.name}</div>

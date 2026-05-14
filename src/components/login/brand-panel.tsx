@@ -16,7 +16,7 @@ export function BrandPanel() {
         </div>
       </div>
       <div>
-        <PlaceholderImage label={"campaign image\nlookbook foto"} className="w-full h-[180px] opacity-70" />
+        <PlaceholderImage src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80" alt="VESTIRE campaign" label={"campaign image\nlookbook foto"} sizes="(max-width: 1024px) 100vw, 40vw" className="w-full h-[180px] opacity-70" />
         <div className="text-[11px] text-white/35 mt-3 tracking-[0.06em]">New Season 2026 – Now Available</div>
       </div>
     </div>

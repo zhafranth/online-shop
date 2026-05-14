@@ -30,7 +30,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       </div>
       <div className="container-site py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-8 lg:gap-[60px] items-start">
-          <ImageGallery label={product.label} selectedColor={product.colors[0]} />
+          <ImageGallery label={product.label} selectedColor={product.colors[0]} image={product.image} />
           <ProductInfo product={product} />
         </div>
       </div>

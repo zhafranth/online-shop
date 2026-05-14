@@ -14,7 +14,7 @@ export function OrderSummary({ items, subtotal, ongkir, isFreeShipping, total }:
         <div className="p-4 sm:p-5">
           {items.slice(0, 3).map((item, i) => (
             <div key={i} className="flex gap-3 mb-3.5 items-center">
-              <PlaceholderImage label={item.label} className="w-[50px] h-[60px] shrink-0" />
+              <PlaceholderImage src={item.image} alt={item.name} label={item.label} sizes="50px" className="w-[50px] h-[60px] shrink-0" />
               <div className="flex-1">
                 <div className="font-serif text-[13px] mb-0.5">{item.name}</div>
                 <div className="text-[11px] text-site-gray">{item.selectedSize} · {item.selectedColor} · ×{item.qty}</div>

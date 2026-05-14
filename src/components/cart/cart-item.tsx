@@ -9,7 +9,7 @@ interface CartItemProps { item: CartItemType; index: number; onUpdateQty: (index
 export function CartItem({ item, index, onUpdateQty, onRemove }: CartItemProps) {
   return (
     <div className="flex gap-3 sm:gap-5 py-5 sm:py-6 border-b border-site-border items-start">
-      <PlaceholderImage label={item.label} className="w-[80px] sm:w-[100px] h-[100px] sm:h-[120px] shrink-0" />
+      <PlaceholderImage src={item.image} alt={item.name} label={item.label} sizes="100px" className="w-[80px] sm:w-[100px] h-[100px] sm:h-[120px] shrink-0" />
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-start gap-3">
           <div className="min-w-0">

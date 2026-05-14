@@ -14,9 +14,9 @@ export default function HomePage() {
       <Navbar />
       <Ticker />
       <HeroSection />
+      <NewArrivals />
       <EditorsPicks />
       <GenderBanner />
-      <NewArrivals />
       <UspStrip />
       <Footer />
       <Toast />
