@@ -9,8 +9,10 @@ interface BadgeProps {
 export function Badge({ children, variant = "default", className }: BadgeProps) {
   return (
     <span className={cn(
-      "inline-block text-[10px] font-semibold tracking-[0.12em] uppercase px-2.5 py-[3px]",
-      variant === "navy" ? "bg-navy text-white border border-navy" : "border border-gold text-gold",
+      "inline-block text-[10px] font-semibold tracking-[0.16em] uppercase px-2.5 py-[3px]",
+      variant === "navy"
+        ? "bg-site-text text-white border border-site-text"
+        : "border border-site-text text-site-text bg-white/90",
       className
     )}>
       {children}

@@ -7,14 +7,14 @@ const BANNERS = [
     label: "For Him",
     desc: "Koleksi pria terbaru",
     cat: "Men",
-    overlay: "rgba(13,21,38,0.6)",
+    overlay: "rgba(10,10,10,0.45)",
     image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
   },
   {
     label: "For Her",
     desc: "Koleksi wanita terkurasi",
     cat: "Women",
-    overlay: "rgba(45,26,46,0.65)",
+    overlay: "rgba(10,10,10,0.45)",
     image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80",
   },
 ];
@@ -27,7 +27,7 @@ export function GenderBanner() {
           <PlaceholderImage src={image} alt={`Koleksi ${label}`} label={`${cat.toLowerCase()} campaign`} sizes="(max-width: 768px) 100vw, 50vw" className="absolute inset-0 w-full h-full" />
           <div className="absolute inset-0" style={{ background: overlay }} />
           <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center px-6">
-            <div className="text-[11px] tracking-[0.2em] uppercase text-gold mb-3">Koleksi {label.split(" ")[1]}</div>
+            <div className="text-[11px] tracking-[0.24em] uppercase text-white/80 mb-3">Koleksi {label.split(" ")[1]}</div>
             <h2 className="font-serif font-normal text-3xl md:text-[40px] mb-2">{label}</h2>
             <p className="text-[13px] text-white/70 mb-6 md:mb-7">{desc}</p>
             <Button variant="outline-white" size="sm">Explore →</Button>

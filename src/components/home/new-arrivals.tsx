@@ -11,7 +11,7 @@ export function NewArrivals() {
     <section className="py-14 md:py-20 bg-cream">
       <div className="container-site">
         <div className="text-center mb-10 md:mb-12">
-          <div className="text-[11px] tracking-[0.16em] uppercase text-gold mb-2">Terbaru</div>
+          <div className="text-[11px] tracking-[0.18em] uppercase text-site-gray mb-2">Terbaru</div>
           <h2 className="font-serif font-normal">New Arrivals</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
