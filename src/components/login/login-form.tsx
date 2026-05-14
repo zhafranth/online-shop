@@ -18,7 +18,7 @@ export function LoginForm({ onSwitchTab }: LoginFormProps) {
   return (
     <div>
       <div className="font-serif text-[22px] mb-1.5">Selamat datang kembali</div>
-      <div className="text-[13px] text-site-gray mb-7">Masuk ke akun VESTIRE kamu</div>
+      <div className="text-[13px] text-site-gray mb-7">Masuk ke akun ThickApparel kamu</div>
       <div className="mb-4"><Input label="Email" type="email" placeholder="nama@email.com" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
       <div className="mb-4">
         <label className="block text-xs font-medium tracking-[0.06em] text-site-gray uppercase mb-1.5">Password</label>

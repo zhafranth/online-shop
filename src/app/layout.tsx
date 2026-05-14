@@ -18,7 +18,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "VESTIRE - Mode Terpilih Untuk Semua",
+  title: "ThickApparel - Mode Terpilih Untuk Semua",
   description:
     "Koleksi fashion premium dengan kualitas terbaik. Kemeja, dress, outer, dan aksesoris untuk pria & wanita.",
 };

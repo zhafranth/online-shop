@@ -33,7 +33,7 @@ export function Navbar() {
             <Menu size={22} strokeWidth={1.8} />
           </button>
           <Link href="/" className="font-serif text-[20px] md:text-[22px] font-bold text-gold tracking-[0.06em] md:mr-12 shrink-0 no-underline">
-            VESTIRE
+            ThickApparel
           </Link>
           <div className="hidden md:flex gap-8 flex-1">
             {NAV_LINKS.map((link) => (
@@ -70,7 +70,7 @@ export function Navbar() {
         >
           <div className="flex items-center justify-between px-5 h-[72px] border-b border-white/[0.08]">
             <Link href="/" onClick={() => setMenuOpen(false)} className="font-serif text-[22px] font-bold text-gold tracking-[0.06em] no-underline">
-              VESTIRE
+              ThickApparel
             </Link>
             <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="p-1">
               <X size={22} strokeWidth={1.8} />

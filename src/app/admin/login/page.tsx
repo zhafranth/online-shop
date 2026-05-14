@@ -30,16 +30,16 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-cream flex flex-col items-center justify-center px-4 py-10">
       <Link href="/" className="font-serif text-[30px] font-bold text-navy tracking-[0.08em] mb-8 no-underline">
-        VESTIRE
+        ThickApparel
       </Link>
 
       <div className="w-full max-w-[420px] bg-site-white border border-site-border p-8">
         <h1 className="font-serif text-[26px] font-semibold text-navy text-center mb-2">Admin Portal</h1>
-        <p className="text-center text-sm text-site-gray mb-6">Masuk untuk mengelola toko VESTIRE</p>
+        <p className="text-center text-sm text-site-gray mb-6">Masuk untuk mengelola toko ThickApparel</p>
 
         <div className="bg-gold-pale border border-gold/40 px-4 py-3 mb-6 text-[13px] text-site-gray-dark">
           <p className="font-semibold mb-1">🔑 Demo Credentials</p>
-          <p>Email: <span className="font-mono">admin@vestire.com</span></p>
+          <p>Email: <span className="font-mono">admin@thickapparel.com</span></p>
           <p>Password: <span className="font-mono">admin123</span></p>
         </div>
 
@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@vestire.com"
+            placeholder="admin@thickapparel.com"
           />
 
           <div>

@@ -9,7 +9,7 @@ export function VoucherInput({ subtotal, onApplyDiscount }: VoucherInputProps) {
   const [msg, setMsg] = useState("");
 
   const applyVoucher = () => {
-    if (voucher.toUpperCase() === "VESTIRE10") {
+    if (voucher.toUpperCase() === "THICK10") {
       onApplyDiscount(Math.round(subtotal * 0.1));
       setMsg("✓ Voucher berhasil! Diskon 10%");
     } else {
@@ -26,7 +26,7 @@ export function VoucherInput({ subtotal, onApplyDiscount }: VoucherInputProps) {
         <Button variant="primary" onClick={applyVoucher}>Pakai</Button>
       </div>
       {msg && <div className={`text-xs mt-2 ${msg.startsWith("✓") ? "text-gold" : "text-[#c0392b]"}`}>{msg}</div>}
-      <div className="text-[11px] text-site-gray mt-1.5">Coba kode: VESTIRE10</div>
+      <div className="text-[11px] text-site-gray mt-1.5">Coba kode: THICK10</div>
     </div>
   );
 }

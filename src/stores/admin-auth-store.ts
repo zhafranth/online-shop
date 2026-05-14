@@ -27,7 +27,7 @@ export const useAdminAuthStore = create<AdminAuthStore>()(
       logout: () => set({ admin: null }),
     }),
     {
-      name: "vestire-admin-auth",
+      name: "thickapparel-admin-auth",
       partialize: (state) => ({ admin: state.admin }),
     }
   )

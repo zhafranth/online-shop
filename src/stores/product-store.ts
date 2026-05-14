@@ -39,7 +39,7 @@ export const useProductStore = create<ProductStore>()(
       getById: (id) => get().products.find((p) => p.id === id),
     }),
     {
-      name: "vestire-products",
+      name: "thickapparel-products",
       partialize: (state) => ({ products: state.products }),
     }
   )

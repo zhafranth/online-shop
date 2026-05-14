@@ -27,7 +27,7 @@ export default function AdminProductsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-[28px] font-semibold text-navy">Produk</h2>
-          <p className="text-sm text-site-gray">Kelola seluruh katalog VESTIRE</p>
+          <p className="text-sm text-site-gray">Kelola seluruh katalog ThickApparel</p>
         </div>
         <Link href="/admin/products/new">
           <Button variant="primary" className="flex items-center gap-2">

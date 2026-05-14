@@ -1,9 +1,9 @@
 import { Order, User } from "@/types/admin";
 
 export const ADMIN_CREDENTIALS = {
-  email: "admin@vestire.com",
+  email: "admin@thickapparel.com",
   password: "admin123",
-  name: "Admin VESTIRE",
+  name: "Admin ThickApparel",
 };
 
 export const SEED_USERS: User[] = [

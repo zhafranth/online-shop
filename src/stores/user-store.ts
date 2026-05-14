@@ -23,7 +23,7 @@ export const useUserStore = create<UserStore>()(
       getById: (id) => get().users.find((u) => u.id === id),
     }),
     {
-      name: "vestire-users",
+      name: "thickapparel-users",
       partialize: (state) => ({ users: state.users }),
     }
   )

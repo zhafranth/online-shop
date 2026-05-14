@@ -27,7 +27,7 @@ export function AdminSidebar() {
     <aside className="fixed left-0 top-0 h-screen w-[240px] bg-navy-dark text-white flex flex-col">
       <div className="px-6 py-7 border-b border-white/10">
         <Link href="/admin/dashboard" className="font-serif text-[22px] font-semibold tracking-[0.06em] text-white no-underline block">
-          VESTIRE <span className="text-gold text-[13px] tracking-[0.12em] uppercase block mt-0.5">Admin</span>
+          ThickApparel <span className="text-gold text-[13px] tracking-[0.12em] uppercase block mt-0.5">Admin</span>
         </Link>
       </div>
 

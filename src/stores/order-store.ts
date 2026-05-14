@@ -25,7 +25,7 @@ export const useOrderStore = create<OrderStore>()(
       getById: (id) => get().orders.find((o) => o.id === id),
     }),
     {
-      name: "vestire-orders",
+      name: "thickapparel-orders",
       partialize: (state) => ({ orders: state.orders }),
     }
   )

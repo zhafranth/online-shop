@@ -16,7 +16,7 @@ export default function LoginPage() {
       </div>
       <div className="bg-site-white flex flex-col justify-center px-5 py-10 sm:p-12 md:p-[clamp(40px,6vw,80px)] min-h-screen">
         <div className="md:hidden mb-8 text-center">
-          <Link href="/" className="font-serif text-[26px] font-bold text-navy tracking-[0.06em] no-underline">VESTIRE</Link>
+          <Link href="/" className="font-serif text-[26px] font-bold text-navy tracking-[0.06em] no-underline">ThickApparel</Link>
         </div>
         <div className="max-w-[400px] w-full mx-auto md:mx-0">
           <div className="flex border-[1.5px] border-site-border mb-8">
