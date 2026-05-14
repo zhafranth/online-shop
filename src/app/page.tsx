@@ -3,7 +3,6 @@ import { Footer } from "@/components/layout/footer";
 import { Ticker } from "@/components/layout/ticker";
 import { HeroSection } from "@/components/home/hero-section";
 import { EditorsPicks } from "@/components/home/editors-picks";
-import { GenderBanner } from "@/components/home/gender-banner";
 import { NewArrivals } from "@/components/home/new-arrivals";
 import { UspStrip } from "@/components/home/usp-strip";
 import { Toast } from "@/components/ui/toast";
@@ -16,7 +15,6 @@ export default function HomePage() {
       <HeroSection />
       <NewArrivals />
       <EditorsPicks />
-      <GenderBanner />
       <UspStrip />
       <Footer />
       <Toast />
