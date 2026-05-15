@@ -1,16 +1,40 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, LogOut } from "lucide-react";
-import { useAdminAuthStore } from "@/stores/admin-auth-store";
+import { usePathname } from "next/navigation";
 
 const TITLES: Record<string, string> = {
   "/admin/dashboard": "Dashboard",
   "/admin/products": "Produk",
   "/admin/products/new": "Tambah Produk",
+  "/admin/categories": "Kategori",
+  "/admin/magazine": "Magazine",
+  "/admin/membership": "Membership",
+  "/admin/home": "Home & Banner",
   "/admin/orders": "Order",
-  "/admin/users": "Pengguna",
+  "/admin/promo": "Promo",
+  "/admin/shipping": "Shipping",
+  "/admin/payment": "Payment",
+  "/admin/size-guide": "Size Guide",
+  "/admin/users": "Customer",
+  "/admin/admins": "Admin Users",
+  "/admin/settings": "Settings",
+};
+
+const SECTION_LABELS: Record<string, string> = {
+  "/admin/dashboard": "Overview",
+  "/admin/products": "Catalog",
+  "/admin/categories": "Catalog",
+  "/admin/magazine": "Content",
+  "/admin/membership": "Content",
+  "/admin/home": "Content",
+  "/admin/orders": "Sales",
+  "/admin/promo": "Sales",
+  "/admin/shipping": "Configuration",
+  "/admin/payment": "Configuration",
+  "/admin/size-guide": "Configuration",
+  "/admin/users": "People",
+  "/admin/admins": "People",
+  "/admin/settings": "System",
 };
 
 function deriveTitle(pathname: string): string {
@@ -20,55 +44,29 @@ function deriveTitle(pathname: string): string {
   return "Admin";
 }
 
+function deriveSection(pathname: string): string | null {
+  const exact = SECTION_LABELS[pathname];
+  if (exact) return exact;
+  const matchKey = Object.keys(SECTION_LABELS).find((k) => pathname.startsWith(k + "/"));
+  return matchKey ? SECTION_LABELS[matchKey] : null;
+}
+
 export function AdminTopbar() {
   const pathname = usePathname();
-  const router = useRouter();
-  const admin = useAdminAuthStore((s) => s.admin);
-  const logout = useAdminAuthStore((s) => s.logout);
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onDocClick = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", onDocClick);
-    return () => document.removeEventListener("mousedown", onDocClick);
-  }, []);
-
-  const handleLogout = () => {
-    logout();
-    router.replace("/admin/login");
-  };
-
-  const initial = admin?.name?.charAt(0) ?? "A";
+  const title = deriveTitle(pathname);
+  const section = deriveSection(pathname);
 
   return (
-    <header className="h-[68px] bg-site-white border-b border-site-border flex items-center justify-between px-8">
-      <h1 className="font-serif text-[26px] font-semibold text-navy">{deriveTitle(pathname)}</h1>
-
-      <div ref={menuRef} className="relative">
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="flex items-center gap-3 px-3 py-1.5 hover:bg-cream/70 rounded-sm transition-colors"
-        >
-          <span className="w-9 h-9 rounded-full bg-navy text-white font-serif text-[15px] font-semibold flex items-center justify-center">
-            {initial}
+    <header className="h-[64px] bg-white border-b border-site-border flex items-center px-8">
+      <div className="flex flex-col">
+        {section && (
+          <span className="text-[10px] font-semibold tracking-[0.18em] uppercase text-site-gray">
+            {section}
           </span>
-          <span className="text-sm font-medium text-site-text">{admin?.name ?? "Admin"}</span>
-          <ChevronDown size={16} className="text-site-gray" />
-        </button>
-        {open && (
-          <div className="absolute right-0 top-full mt-2 w-52 bg-white border border-site-border shadow-lg">
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-site-text hover:bg-cream text-left"
-            >
-              <LogOut size={15} />
-              Logout
-            </button>
-          </div>
         )}
+        <h1 className="text-[20px] font-semibold tracking-tight text-site-text leading-tight mt-0.5">
+          {title}
+        </h1>
       </div>
     </header>
   );
