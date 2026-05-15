@@ -47,7 +47,7 @@ const SECTIONS: NavSection[] = [
     label: "Catalog",
     items: [
       { href: "/admin/products", label: "Products", icon: Package, status: "ready" },
-      { href: "/admin/categories", label: "Categories", icon: Tags, status: "soon" },
+      { href: "/admin/categories", label: "Categories", icon: Tags, status: "ready" },
     ],
   },
   {

@@ -1,9 +1,10 @@
 "use client";
+import { useMemo } from "react";
 import { Tag } from "@/components/ui/tag";
 import { Button } from "@/components/ui/button";
-import { PRODUCTS } from "@/lib/constants";
+import { useProductStore } from "@/stores/product-store";
+import { useCategoryStore } from "@/stores/category-store";
 
-const CATEGORIES = ["Semua", "Men", "Women", "Unisex", "Aksesoris"];
 const SIZES = ["S", "M", "L", "XL", "2XL", "3XL"];
 const COLORS = [
   { name: "Hitam", hex: "#1a1a2a" }, { name: "Navy", hex: "#1a2744" },
@@ -26,15 +27,44 @@ interface SidebarFilterProps {
 }
 
 export function SidebarFilter({ activeCat, activeSizes, activeColors, maxPrice, onCatChange, onSizeToggle, onColorToggle, onPriceChange, onReset, hasActiveFilters }: SidebarFilterProps) {
+  const products = useProductStore((s) => s.products);
+  const categories = useCategoryStore((s) => s.categories);
+
+  const visibleCategories = useMemo(
+    () => categories.filter((c) => c.enabled).sort((a, b) => a.order - b.order),
+    [categories],
+  );
+
+  const counts = useMemo(() => {
+    const m = new Map<string, number>();
+    products.forEach((p) => m.set(p.category, (m.get(p.category) ?? 0) + 1));
+    return m;
+  }, [products]);
+
+  const rows: Array<{ id: string; label: string; count: number }> = [
+    { id: "semua", label: "Semua", count: products.length },
+    ...visibleCategories.map((c) => ({
+      id: c.id,
+      label: c.label,
+      count: counts.get(c.id) ?? 0,
+    })),
+  ];
+
   return (
     <aside className="lg:sticky lg:top-[90px] self-start">
       {/* Category */}
       <div className="mb-8">
         <div className="text-[11px] font-semibold tracking-[0.14em] uppercase text-navy mb-3.5 pb-2.5 border-b border-site-border">Kategori</div>
-        {CATEGORIES.map((c) => (
-          <div key={c} onClick={() => onCatChange(c)} className={`py-2 text-sm cursor-pointer flex justify-between items-center border-b border-site-border ${activeCat === c ? "text-navy font-semibold" : "text-site-gray-dark font-normal"}`}>
-            {c}
-            <span className="text-[11px] text-site-gray">{PRODUCTS.filter((p) => c === "Semua" || p.category === c).length}</span>
+        {rows.map((c) => (
+          <div
+            key={c.id}
+            onClick={() => onCatChange(c.id)}
+            className={`py-2 text-sm cursor-pointer flex justify-between items-center border-b border-site-border ${
+              activeCat === c.id ? "text-navy font-semibold" : "text-site-gray-dark font-normal"
+            }`}
+          >
+            {c.label}
+            <span className="text-[11px] text-site-gray tabular-nums">{c.count}</span>
           </div>
         ))}
       </div>

@@ -1,8 +1,7 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
-import { PRODUCTS } from "@/lib/constants";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SidebarFilter } from "@/components/catalog/sidebar-filter";
@@ -10,13 +9,16 @@ import { ProductGrid } from "@/components/catalog/product-grid";
 import { ActiveFilters } from "@/components/catalog/active-filters";
 import { Toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
-
-const CATEGORIES = ["Semua", "Men", "Women", "Unisex", "Aksesoris"];
-const SIZES = ["S", "M", "L", "XL", "2XL", "3XL"];
+import { useProductStore } from "@/stores/product-store";
+import { useCategoryStore } from "@/stores/category-store";
+import { categoryLabelFallback } from "@/lib/utils";
 
 function CatalogContent() {
   const searchParams = useSearchParams();
-  const initialCat = searchParams.get("cat") || "Semua";
+  const products = useProductStore((s) => s.products);
+  const categories = useCategoryStore((s) => s.categories);
+
+  const initialCat = (searchParams.get("cat") || "semua").toLowerCase();
   const [activeCat, setActiveCat] = useState(initialCat);
   const [activeSizes, setActiveSizes] = useState<string[]>([]);
   const [activeColors, setActiveColors] = useState<string[]>([]);
@@ -29,32 +31,62 @@ function CatalogContent() {
     return () => { document.body.style.overflow = ""; };
   }, [filterOpen]);
 
-  const toggleArr = (arr: string[], val: string) => arr.includes(val) ? arr.filter((x) => x !== val) : [...arr, val];
+  const enabledCategoryIds = useMemo(
+    () => new Set(categories.filter((c) => c.enabled).map((c) => c.id)),
+    [categories],
+  );
 
-  const filtered = PRODUCTS.filter((p) => {
-    if (activeCat !== "Semua" && p.category !== activeCat) return false;
-    if (activeSizes.length && !activeSizes.some((s) => p.sizes.includes(s))) return false;
-    if (activeColors.length && !activeColors.some((c) => p.colors.includes(c))) return false;
-    if (p.price > maxPrice * 1000) return false;
-    return true;
-  }).sort((a, b) => {
-    if (sort === "Harga ↑") return a.price - b.price;
-    if (sort === "Harga ↓") return b.price - a.price;
-    return b.id - a.id;
-  });
+  const activeCatLabel = useMemo(() => {
+    if (activeCat === "semua") return "Semua";
+    const found = categories.find((c) => c.id === activeCat);
+    return found?.label ?? categoryLabelFallback(activeCat);
+  }, [activeCat, categories]);
 
-  const activeFilters = [...(activeCat !== "Semua" ? [activeCat] : []), ...activeSizes, ...activeColors];
+  const toggleArr = (arr: string[], val: string) =>
+    arr.includes(val) ? arr.filter((x) => x !== val) : [...arr, val];
 
-  const handleRemoveFilter = (filter: string) => {
-    if (CATEGORIES.includes(filter)) setActiveCat("Semua");
-    else if (SIZES.includes(filter)) setActiveSizes(toggleArr(activeSizes, filter));
-    else setActiveColors(toggleArr(activeColors, filter));
+  const filtered = products
+    .filter((p) => {
+      if (activeCat !== "semua" && p.category !== activeCat) return false;
+      // Hide products from disabled categories when browsing "all".
+      if (activeCat === "semua" && !enabledCategoryIds.has(p.category)) return false;
+      if (activeSizes.length && !activeSizes.some((s) => p.sizes.includes(s))) return false;
+      if (activeColors.length && !activeColors.some((c) => p.colors.includes(c))) return false;
+      if (p.price > maxPrice * 1000) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sort === "Harga ↑") return a.price - b.price;
+      if (sort === "Harga ↓") return b.price - a.price;
+      return b.id - a.id;
+    });
+
+  const activeFilters = [
+    ...(activeCat !== "semua" ? [{ kind: "cat" as const, id: activeCat, label: activeCatLabel }] : []),
+    ...activeSizes.map((s) => ({ kind: "size" as const, id: s, label: s })),
+    ...activeColors.map((c) => ({ kind: "color" as const, id: c, label: c })),
+  ];
+
+  const handleRemoveFilter = (filterLabel: string) => {
+    const f = activeFilters.find((x) => x.label === filterLabel);
+    if (!f) return;
+    if (f.kind === "cat") setActiveCat("semua");
+    else if (f.kind === "size") setActiveSizes(toggleArr(activeSizes, f.id));
+    else setActiveColors(toggleArr(activeColors, f.id));
   };
 
-  const handleReset = () => { setActiveCat("Semua"); setActiveSizes([]); setActiveColors([]); setMaxPrice(650); };
+  const handleReset = () => {
+    setActiveCat("semua");
+    setActiveSizes([]);
+    setActiveColors([]);
+    setMaxPrice(650);
+  };
 
   const sidebarProps = {
-    activeCat, activeSizes, activeColors, maxPrice,
+    activeCat,
+    activeSizes,
+    activeColors,
+    maxPrice,
     onCatChange: setActiveCat,
     onSizeToggle: (s: string) => setActiveSizes(toggleArr(activeSizes, s)),
     onColorToggle: (c: string) => setActiveColors(toggleArr(activeColors, c)),
@@ -70,10 +102,12 @@ function CatalogContent() {
         <div className="container-site">
           <div className="text-[11px] text-site-gray mb-1.5">
             <a href="/" className="cursor-pointer hover:text-navy">Home</a>
-            {" › Katalog"}{activeCat !== "Semua" && ` › ${activeCat}`}
+            {" › Katalog"}{activeCat !== "semua" && ` › ${activeCatLabel}`}
           </div>
           <div className="flex justify-between items-center gap-3">
-            <h1 className="font-serif font-normal text-2xl md:text-[32px]">{activeCat === "Semua" ? "Semua Produk" : `Koleksi ${activeCat}`}</h1>
+            <h1 className="font-serif font-normal text-2xl md:text-[32px]">
+              {activeCat === "semua" ? "Semua Produk" : `Koleksi ${activeCatLabel}`}
+            </h1>
             <div className="text-[13px] text-site-gray shrink-0">{filtered.length} produk</div>
           </div>
         </div>
@@ -90,7 +124,12 @@ function CatalogContent() {
                 Filter{activeFilters.length > 0 && ` (${activeFilters.length})`}
               </Button>
             </div>
-            <ActiveFilters filters={activeFilters} sort={sort} onRemoveFilter={handleRemoveFilter} onSortChange={setSort} />
+            <ActiveFilters
+              filters={activeFilters.map((f) => f.label)}
+              sort={sort}
+              onRemoveFilter={handleRemoveFilter}
+              onSortChange={setSort}
+            />
             <ProductGrid products={filtered} />
           </div>
         </div>

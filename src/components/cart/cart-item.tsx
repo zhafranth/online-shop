@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { CartItem as CartItemType } from "@/types";
-import { formatPrice } from "@/lib/utils";
+import { categoryLabelFallback, formatPrice } from "@/lib/utils";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 
 interface CartItemProps { item: CartItemType; index: number; onUpdateQty: (index: number, qty: number) => void; onRemove: (index: number) => void; }
@@ -13,7 +13,7 @@ export function CartItem({ item, index, onUpdateQty, onRemove }: CartItemProps) 
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-start gap-3">
           <div className="min-w-0">
-            <div className="text-[11px] text-site-gray mb-0.5">{item.category}</div>
+            <div className="text-[11px] text-site-gray mb-0.5">{categoryLabelFallback(item.category)}</div>
             <Link href={`/product/${item.id}`} className="font-serif text-base sm:text-lg mb-1.5 cursor-pointer no-underline text-site-text hover:text-navy block">{item.name}</Link>
             <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-site-gray">
               <span>Ukuran: {item.selectedSize || "-"}</span>

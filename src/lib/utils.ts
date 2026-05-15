@@ -31,3 +31,11 @@ export function discountPercent(price: number, originalPrice: number | null): nu
   if (!originalPrice || originalPrice <= price) return 0;
   return Math.round((1 - price / originalPrice) * 100);
 }
+
+export function categoryLabelFallback(id: string): string {
+  if (!id) return "";
+  return id
+    .split("-")
+    .map((p) => (p ? p.charAt(0).toUpperCase() + p.slice(1) : p))
+    .join(" ");
+}

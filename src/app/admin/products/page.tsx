@@ -4,16 +4,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useProductStore } from "@/stores/product-store";
+import { useCategoryStore } from "@/stores/category-store";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DataTable } from "@/components/admin/data-table";
 import { ConfirmModal } from "@/components/admin/confirm-modal";
-import { formatPrice } from "@/lib/utils";
+import { categoryLabelFallback, formatPrice } from "@/lib/utils";
 
 export default function AdminProductsPage() {
   const products = useProductStore((s) => s.products);
   const deleteProduct = useProductStore((s) => s.deleteProduct);
+  const categories = useCategoryStore((s) => s.categories);
   const [toDelete, setToDelete] = useState<{ id: number; name: string } | null>(null);
+
+  const categoryLabel = (id: string) =>
+    categories.find((c) => c.id === id)?.label ?? categoryLabelFallback(id);
 
   const confirmDelete = () => {
     if (toDelete) {
@@ -48,7 +53,7 @@ export default function AdminProductsPage() {
               <img src={p.image} alt={p.name} className="w-10 h-10 object-cover bg-cream" />
             </td>
             <td className="px-5 py-3 text-site-text">{p.name}</td>
-            <td className="px-5 py-3 text-site-gray-dark">{p.category}</td>
+            <td className="px-5 py-3 text-site-gray-dark">{categoryLabel(p.category)}</td>
             <td className="px-5 py-3 text-site-text">{formatPrice(p.price)}</td>
             <td className="px-5 py-3">
               <span className={p.stock === 0 ? "text-[#b91c1c] font-semibold" : "text-site-text"}>

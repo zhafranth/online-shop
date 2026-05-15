@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Product } from "@/types";
-import { colorHex, discountPercent, formatPrice } from "@/lib/utils";
+import { categoryLabelFallback, colorHex, discountPercent, formatPrice } from "@/lib/utils";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { Badge } from "@/components/ui/badge";
 
@@ -34,7 +34,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               </div>
             </div>
             <div className="pt-3">
-              <div className="text-[11px] text-site-gray mb-0.5">{p.category}</div>
+              <div className="text-[11px] text-site-gray mb-0.5">{categoryLabelFallback(p.category)}</div>
               <div className="font-serif text-base font-medium mb-1">{p.name}</div>
               <div className="text-[13px] text-site-gray">
                 <span className="text-navy font-semibold text-sm">{formatPrice(p.price)}</span>

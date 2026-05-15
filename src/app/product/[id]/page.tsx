@@ -13,7 +13,7 @@ import { RelatedProducts } from "@/components/product/related-products";
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const product = PRODUCTS.find((p) => p.id === Number(id)) || PRODUCTS[0];
-  const related = PRODUCTS.filter((x) => x.id !== product.id && (x.category === product.category || x.category === "Unisex")).slice(0, 4);
+  const related = PRODUCTS.filter((x) => x.id !== product.id && (x.category === product.category || x.category === "unisex")).slice(0, 4);
 
   return (
     <div className="min-h-screen pt-[72px] animate-fade-up">

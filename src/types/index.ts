@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   price: number;
   originalPrice: number | null;
-  category: "Men" | "Women" | "Unisex" | "Aksesoris";
+  category: string;
   sizes: string[];
   colors: string[];
   badge: "NEW" | "BEST SELLER" | "SALE" | null;

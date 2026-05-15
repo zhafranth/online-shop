@@ -40,6 +40,19 @@ export const useProductStore = create<ProductStore>()(
     }),
     {
       name: "thickapparel-products",
+      version: 1,
+      migrate: (persisted, version) => {
+        if (version < 1 && persisted && typeof persisted === "object" && "products" in persisted) {
+          const s = persisted as { products?: Product[] };
+          return {
+            products: (s.products ?? []).map((p) => ({
+              ...p,
+              category: typeof p.category === "string" ? p.category.toLowerCase() : p.category,
+            })),
+          };
+        }
+        return persisted as { products: Product[] };
+      },
       partialize: (state) => ({ products: state.products }),
     }
   )

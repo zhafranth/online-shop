@@ -1,15 +1,15 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, X } from "lucide-react";
 import { Product } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProductStore } from "@/stores/product-store";
+import { useCategoryStore } from "@/stores/category-store";
 
 const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "28", "30", "32", "34", "36", "One Size"];
-const CATEGORIES: Product["category"][] = ["Men", "Women", "Unisex", "Aksesoris"];
 const BADGES: ("NEW" | "BEST SELLER" | "SALE")[] = ["NEW", "BEST SELLER", "SALE"];
 
 interface ProductFormProps {
@@ -21,13 +21,20 @@ export function ProductForm({ mode, product }: ProductFormProps) {
   const router = useRouter();
   const addProduct = useProductStore((s) => s.addProduct);
   const updateProduct = useProductStore((s) => s.updateProduct);
+  const categories = useCategoryStore((s) => s.categories);
+  const sortedCategories = useMemo(
+    () => [...categories].sort((a, b) => a.order - b.order),
+    [categories],
+  );
 
   const [image, setImage] = useState(product?.image ?? "");
   const [name, setName] = useState(product?.name ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [price, setPrice] = useState<number | "">(product?.price ?? "");
   const [originalPrice, setOriginalPrice] = useState<number | "">(product?.originalPrice ?? "");
-  const [category, setCategory] = useState<Product["category"]>(product?.category ?? "Unisex");
+  const [category, setCategory] = useState<string>(
+    product?.category ?? sortedCategories[0]?.id ?? "unisex",
+  );
   const [sizes, setSizes] = useState<string[]>(product?.sizes ?? []);
   const [colors, setColors] = useState<string[]>(product?.colors ?? []);
   const [colorInput, setColorInput] = useState("");
@@ -143,10 +150,20 @@ export function ProductForm({ mode, product }: ProductFormProps) {
         <label className="block text-xs font-medium tracking-[0.06em] text-site-gray uppercase mb-1.5">Kategori</label>
         <select
           value={category}
-          onChange={(e) => setCategory(e.target.value as Product["category"])}
+          onChange={(e) => setCategory(e.target.value)}
           className="w-full px-4 py-3 border-[1.5px] border-site-border bg-white font-sans text-sm text-site-text outline-none focus:border-navy"
         >
-          {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          {sortedCategories.length === 0 && (
+            <option value="" disabled>
+              Belum ada kategori — tambahkan di menu Categories
+            </option>
+          )}
+          {sortedCategories.map((c) => (
+            <option key={c.id} value={c.id} disabled={!c.enabled}>
+              {c.label}
+              {!c.enabled ? " (nonaktif)" : ""}
+            </option>
+          ))}
         </select>
       </div>
 

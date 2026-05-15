@@ -6,14 +6,14 @@ const BANNERS = [
   {
     label: "For Him",
     desc: "Koleksi pria terbaru",
-    cat: "Men",
+    cat: "men",
     overlay: "rgba(10,10,10,0.45)",
     image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
   },
   {
     label: "For Her",
     desc: "Koleksi wanita terkurasi",
-    cat: "Women",
+    cat: "women",
     overlay: "rgba(10,10,10,0.45)",
     image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80",
   },
