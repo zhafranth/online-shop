@@ -1,0 +1,32 @@
+import Link from "next/link";
+import { ARTICLES } from "@/lib/magazine-seeds";
+import { ArticleCard } from "@/components/magazine/article-card";
+
+export function LatestMagazine() {
+  const latest = ARTICLES.slice(0, 3);
+  return (
+    <section className="py-14 md:py-20 bg-cream border-t border-site-border">
+      <div className="container-site">
+        <div className="flex justify-between items-end mb-10 md:mb-14 gap-4">
+          <div>
+            <div className="text-[11px] tracking-[0.18em] uppercase text-site-gray mb-2">
+              Fashiontaiment
+            </div>
+            <h2 className="font-serif font-normal">Dari Magazine</h2>
+          </div>
+          <Link
+            href="/magazine"
+            className="text-[12px] tracking-[0.14em] uppercase text-site-text underline underline-offset-4 shrink-0"
+          >
+            Semua Artikel →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+          {latest.map((article) => (
+            <ArticleCard key={article.slug} article={article} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
