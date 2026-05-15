@@ -1,101 +1,88 @@
-# VESTIRE - Online Shop Web Application
+# CLAUDE.md
 
-## Project Overview
-VESTIRE is an online clothing shop web application targeting unisex audiences. The design follows a minimalist & elegant aesthetic with a dark & luxurious color palette (navy, black, gold).
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project
+
+**ThickApparel** — an online clothing shop (unisex). All user-facing copy is **Indonesian (Bahasa Indonesia)**. Currency is rendered with `formatPrice()` (`Rp X.XXX`, `id-ID` locale) in `src/lib/utils.ts`.
 
 ## Tech Stack
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 + custom CSS variables for design tokens
-- **Database**: PostgreSQL
-- **ORM**: Prisma
-- **Authentication**: NextAuth.js v5
-- **State Management**: Zustand (client-side cart/UI state)
-- **UI Icons**: Lucide React
-- **Fonts**: Cormorant Garamond (serif headings) + DM Sans (sans-serif body)
 
-## Design System
+- **Next.js 15.5** (App Router) + **React 19.2** + **TypeScript** (strict)
+- **Tailwind CSS v4** — design tokens declared with the `@theme` directive in `src/app/globals.css`. There is no `tailwind.config` file.
+- **Zustand 5** (with `persist` middleware) for all client state
+- **Lucide React** for icons, **Recharts** for the admin dashboard chart
+- **No backend, no DB, no auth provider.** Despite what older notes may suggest, this project does not use Prisma, PostgreSQL, or NextAuth. There is no `prisma/`, no `src/lib/db.ts`, no `src/lib/auth.ts`, no `/api` route handlers.
 
-### Color Tokens
-```
---navy-dark: #0d1526
---navy: #1a2744
---navy-mid: #243352
---gold: #c9a84c
---gold-light: #e8d5a3
---gold-pale: #f7f0e0
---cream: #f5f0e8
---white: #faf9f7
---gray-dark: #3a3a4a
---gray: #888
---gray-light: #ccc
---border: #e2ddd4
---text: #1a1a2a
-```
-
-### Typography
-- Headings: `Cormorant Garamond` (serif), weight 300-700
-- Body: `DM Sans` (sans-serif), weight 300-600
-- Base font size: 15px, line-height: 1.6
-
-### Design Patterns
-- Buttons: uppercase, letter-spacing 0.08em, 13px font
-- Badges: 10px, uppercase, letter-spacing 0.12em
-- Cards: hover scale effect on images (1.04)
-- Forms: 1.5px border, 12px 16px padding
-- Animations: fadeUp (0.4s ease), ticker (25s linear infinite)
-
-## Pages
-1. **Homepage** - Split hero + lookbook mosaic + gender banner + new arrivals + USP strip
-2. **Catalog** - Sidebar filter (category, size, price range, color) + product grid + sort
-3. **Product Detail** - Image gallery + color/size selector + inline size guide + tabs (description, material, reviews)
-4. **Cart** - Progress steps + item list + voucher code + sticky total bar
-5. **Checkout** - Accordion (address, shipping, payment) + order summary + success screen
-6. **Login/Register** - Split screen (brand panel + form panel) with tab toggle
-
-## Project Structure
-```
-src/
-  app/                    # Next.js App Router pages
-    (auth)/               # Auth pages (login/register)
-    (shop)/               # Shop pages (home, catalog, detail, cart, checkout)
-    api/                  # API routes
-    layout.tsx            # Root layout
-    globals.css           # Global styles + design tokens
-  components/
-    ui/                   # Reusable UI components (Button, Badge, Input, etc.)
-    layout/               # Layout components (Navbar, Footer)
-    home/                 # Homepage sections
-    catalog/              # Catalog page components
-    product/              # Product detail components
-    cart/                 # Cart components
-    checkout/             # Checkout components
-  lib/
-    db.ts                 # Prisma client
-    auth.ts               # NextAuth config
-    utils.ts              # Utility functions (price formatter, etc.)
-  stores/
-    cart.ts               # Zustand cart store
-  types/
-    index.ts              # TypeScript type definitions
-prisma/
-  schema.prisma           # Database schema
-```
-
-## Conventions
-- Use Indonesian (Bahasa Indonesia) for all user-facing text
-- Currency format: `Rp X.XXX` using `id-ID` locale
-- Component files: PascalCase (e.g., `ProductCard.tsx`)
-- Utility files: camelCase (e.g., `formatPrice.ts`)
-- Use `"use client"` directive only when client interactivity is needed
-- Prefer Server Components by default
-- All images use Next.js `<Image>` component with placeholder patterns until real images are added
+> **Heads-up (from `AGENTS.md`):** Next.js 15 has breaking changes from older training data. Consult `node_modules/next/dist/docs/` before writing non-obvious Next.js code, and heed deprecation notices.
 
 ## Commands
+
 ```bash
-npm run dev       # Start development server
-npm run build     # Production build
-npm run lint      # ESLint
-npx prisma studio # Database GUI
-npx prisma db push # Push schema to database
+npm run dev      # next dev
+npm run build    # next build
+npm run start    # next start
+npm run lint     # eslint (flat config in eslint.config.mjs)
 ```
+
+There are no tests configured.
+
+## Architecture: data flow
+
+This is a **frontend-only prototype**. There is no API layer — instead:
+
+1. **Seed data** lives in plain TS modules:
+   - `src/lib/constants.ts` — `PRODUCTS`, `SHIPPING_OPTIONS`, `PAYMENT_OPTIONS`, `SIZE_GUIDE`
+   - `src/lib/admin-seeds.ts` — `ADMIN_CREDENTIALS`, `SEED_USERS`, `SEED_ORDERS`
+2. **Zustand stores** in `src/stores/` hydrate from those seeds, expose CRUD-style actions, and persist to `localStorage` under keys prefixed `thickapparel-*`:
+   - `cart-store.ts` (`thickapparel-cart`) — shopping cart, toast queue
+   - `product-store.ts` (`thickapparel-products`) — product catalog (admin can add/edit/delete)
+   - `order-store.ts` (`thickapparel-orders`) — orders + status updates
+   - `user-store.ts` (`thickapparel-users`) — registered customers
+   - `admin-auth-store.ts` (`thickapparel-admin-auth`) — admin session
+3. All store files are `"use client"` and use `persist` with `partialize` to keep only the data slice (not the action methods).
+
+When changing a data shape, update the corresponding seed and the matching type in `src/types/index.ts` (storefront) or `src/types/admin.ts` (admin) together — they are the schema-of-record.
+
+## Architecture: routing
+
+Flat App Router layout under `src/app/` — **no `(auth)` or `(shop)` route groups** despite what older notes claim:
+
+| Path                              | Purpose                                   |
+| --------------------------------- | ----------------------------------------- |
+| `/`                               | Homepage (hero, new arrivals, USP, etc.)  |
+| `/catalog`                        | Product grid + sidebar filters            |
+| `/product/[id]`                   | Product detail                            |
+| `/cart`, `/checkout`              | Cart + checkout flow                      |
+| `/login`                          | Storefront login/register (split screen)  |
+| `/admin/login`                    | Admin login                               |
+| `/admin/dashboard`                | Sales chart, stat cards (Recharts)        |
+| `/admin/products`, `.../new`, `.../[id]/edit` | Product CRUD                  |
+| `/admin/orders`, `.../[id]`       | Order list + detail / status updates      |
+| `/admin/users`                    | Customer list                             |
+
+### Admin auth gate
+
+`src/app/admin/layout.tsx` wraps every `/admin/*` route in `<AdminGuard>` (`src/components/admin/admin-guard.tsx`). The guard reads `useAdminAuthStore` and:
+- redirects unauthenticated visitors to `/admin/login`
+- redirects authenticated admins away from `/admin/login` to `/admin/dashboard`
+
+Credentials are **hardcoded** in `src/lib/admin-seeds.ts` (`admin@thickapparel.com` / `admin123`) — there is no real auth, just a localStorage flag. Don't add real-secret logic on top of this without first replacing the auth layer.
+
+## Design system
+
+Tokens are defined in `src/app/globals.css` inside `@theme`. The palette names (`navy`, `gold`, `cream`, etc.) are **legacy** — they map to a neutral grayscale (`gold` is now `#0a0a0a`, `navy-dark` is `#0a0a0a`, etc.) so existing class names keep working without a global rename. **Do not assume colors from the names** — always check `globals.css`.
+
+- Fonts: `Cormorant Garamond` (serif headings), `DM Sans` (sans body) — loaded via `next/font/google` in `src/app/layout.tsx` and exposed as CSS vars (`--font-cormorant`, `--font-dm-sans`).
+- Container utility: `.container-site` (max-width 1280px, padding 40px / 16px mobile).
+- Animations defined in `globals.css`: `fadeUp`, `ticker`, `toastIn`, `toastOut`.
+- Reusable primitives in `src/components/ui/` — `Button`, `Badge`, `Input`, `Tag`, `StepBar`, `Toast`, `PlaceholderImage`. Prefer these over hand-rolled equivalents.
+- `PlaceholderImage` renders a striped placeholder when `src` is omitted; otherwise a `next/image` with `fill`. Use it instead of bare `<Image>` for product/lookbook slots.
+
+## Conventions
+
+- TypeScript path alias: `@/*` → `./src/*`
+- Component files: kebab-case (e.g. `product-form.tsx`, `admin-sidebar.tsx`) — older notes saying PascalCase are wrong, the actual codebase is kebab-case.
+- Default to **Server Components**; add `"use client"` only when needed (interactivity, Zustand, hooks).
+- All product/lookbook images are remote Unsplash URLs. The hostname `images.unsplash.com` is allowlisted in `next.config.ts` — add new remote hosts there if needed.
+- Mock-data identifiers: products use numeric `id`, orders use `ORD-XXX` strings.
