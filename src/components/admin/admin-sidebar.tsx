@@ -69,7 +69,7 @@ const SECTIONS: NavSection[] = [
     label: "Configuration",
     items: [
       { href: "/admin/shipping", label: "Shipping", icon: Truck, status: "soon" },
-      { href: "/admin/payment", label: "Payment", icon: CreditCard, status: "soon" },
+      { href: "/admin/payment", label: "Payment", icon: CreditCard, status: "ready" },
       { href: "/admin/size-guide", label: "Size Guide", icon: Ruler, status: "soon" },
     ],
   },
