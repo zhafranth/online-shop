@@ -1,3 +1,10 @@
+import type {
+  OrderShippingStatus,
+  PaymentStatus,
+  ShippingAddress,
+  TrackingManifest,
+} from "@/types/raja-ongkir";
+
 export type OrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled";
 
 export interface OrderItem {
@@ -7,6 +14,15 @@ export interface OrderItem {
   qty: number;
   size: string;
   color: string;
+}
+
+export interface OrderShippingDetails {
+  courierCode: string;
+  courierName: string;
+  service: string;
+  etd: string;
+  cost: number;
+  address: ShippingAddress;
 }
 
 export interface Order {
@@ -22,6 +38,13 @@ export interface Order {
   shippingAddress: string;
   paymentMethod: string;
   createdAt: string;         // ISO 8601
+  awb?: string;
+  paymentId?: string;
+  paymentStatus?: PaymentStatus;
+  paidAt?: string;
+  shippingStatus?: OrderShippingStatus;
+  shippingDetails?: OrderShippingDetails;
+  manifest?: TrackingManifest[];
 }
 
 export interface User {

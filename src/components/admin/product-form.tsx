@@ -33,6 +33,7 @@ export function ProductForm({ mode, product }: ProductFormProps) {
   const [colorInput, setColorInput] = useState("");
   const [badge, setBadge] = useState<Product["badge"]>(product?.badge ?? null);
   const [stock, setStock] = useState<number | "">(product?.stock ?? "");
+  const [weight, setWeight] = useState<number | "">(product?.weight ?? "");
   const [error, setError] = useState("");
 
   const toggleSize = (s: string) => {
@@ -58,6 +59,7 @@ export function ProductForm({ mode, product }: ProductFormProps) {
     if (sizes.length === 0) return setError("Pilih minimal satu ukuran.");
     if (colors.length === 0) return setError("Tambahkan minimal satu warna.");
     if (stock === "" || stock < 0) return setError("Stok tidak boleh negatif.");
+    if (weight === "" || weight <= 0) return setError("Berat (gram) harus lebih dari 0.");
 
     const data = {
       image: image.trim(),
@@ -70,6 +72,7 @@ export function ProductForm({ mode, product }: ProductFormProps) {
       colors,
       badge,
       stock: Number(stock),
+      weight: Number(weight),
       label: name.trim().toLowerCase(),
     };
 
@@ -201,7 +204,10 @@ export function ProductForm({ mode, product }: ProductFormProps) {
         </select>
       </div>
 
-      <Input id="p-stock" label="Stok" type="number" min={0} value={stock} onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))} required />
+      <div className="grid grid-cols-2 gap-4">
+        <Input id="p-stock" label="Stok" type="number" min={0} value={stock} onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))} required />
+        <Input id="p-weight" label="Berat (gram)" type="number" min={1} value={weight} onChange={(e) => setWeight(e.target.value === "" ? "" : Number(e.target.value))} required />
+      </div>
 
       {error && (
         <div className="px-3.5 py-2.5 text-[13px] bg-[#fef2f2] text-[#991b1b] border border-[#fecaca]">

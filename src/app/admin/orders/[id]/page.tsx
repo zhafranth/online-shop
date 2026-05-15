@@ -132,7 +132,45 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             <h3 className="text-[11px] font-semibold tracking-[0.12em] uppercase text-site-gray mb-3">Pembayaran</h3>
             <p className="text-site-text font-medium">{order.paymentMethod.toUpperCase()}</p>
             <p className="text-sm text-site-gray-dark mt-1">Dibuat {fmtDate(order.createdAt)}</p>
+            {order.paymentStatus && (
+              <p className="text-sm text-site-gray-dark mt-1">
+                Status: <span className="font-semibold">{order.paymentStatus}</span>
+                {order.paidAt && <> · Dibayar {fmtDate(order.paidAt)}</>}
+              </p>
+            )}
           </div>
+
+          {(order.shippingDetails || order.awb) && (
+            <div className="bg-white border border-site-border p-6">
+              <h3 className="text-[11px] font-semibold tracking-[0.12em] uppercase text-site-gray mb-3">Pengiriman</h3>
+              {order.shippingDetails && (
+                <p className="text-site-text font-medium">
+                  {order.shippingDetails.courierName}{" "}
+                  <span className="text-site-gray font-normal">
+                    · {order.shippingDetails.service}
+                  </span>
+                </p>
+              )}
+              {order.awb && (
+                <p className="text-sm text-site-gray-dark mt-1">
+                  AWB: <span className="font-mono font-semibold">{order.awb}</span>
+                </p>
+              )}
+              {order.shippingStatus && (
+                <p className="text-sm text-site-gray-dark mt-1">
+                  Status: <span className="font-semibold">{order.shippingStatus}</span>
+                </p>
+              )}
+              {order.paidAt && (
+                <Link
+                  href={`/orders/${order.id}`}
+                  className="inline-block mt-3 text-xs text-navy underline"
+                >
+                  Lihat tracking customer →
+                </Link>
+              )}
+            </div>
+          )}
 
           <div className="bg-white border border-site-border p-6">
             <h3 className="text-[11px] font-semibold tracking-[0.12em] uppercase text-site-gray mb-3">Update Status</h3>

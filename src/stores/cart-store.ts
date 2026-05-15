@@ -14,6 +14,7 @@ interface CartStore {
   showToast: (message: string) => void;
   dismissToast: () => void;
   totalItems: () => number;
+  totalWeight: () => number;
   subtotal: () => number;
 }
 
@@ -66,6 +67,12 @@ export const useCartStore = create<CartStore>()(
       dismissToast: () => set({ toast: null }),
 
       totalItems: () => get().items.reduce((sum, item) => sum + item.qty, 0),
+
+      totalWeight: () =>
+        get().items.reduce(
+          (sum, item) => sum + (item.weight ?? 0) * item.qty,
+          0,
+        ),
 
       subtotal: () =>
         get().items.reduce((sum, item) => sum + item.price * item.qty, 0),

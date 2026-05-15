@@ -11,6 +11,7 @@ export interface Product {
   image: string;
   description: string;
   stock: number;
+  weight: number; // gram per pcs
 }
 
 export interface CartItem extends Product {
