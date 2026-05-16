@@ -1,6 +1,7 @@
 "use client";
 import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, Heart, ShoppingBag, Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
 import { useCartStore } from "@/stores/cart-store";
 import { useMembershipStore } from "@/stores/membership-store";
@@ -82,8 +83,16 @@ export function Navbar() {
           </button>
           <Link
             href="/"
-            className="font-serif text-[20px] md:text-[22px] font-semibold text-site-text tracking-[0.18em] md:mr-12 shrink-0 no-underline uppercase"
+            className="font-serif text-[20px] md:text-[22px] font-semibold text-site-text tracking-[0.18em] md:mr-12 shrink-0 no-underline uppercase flex items-center gap-2"
           >
+            <Image
+              src="/thickapparel-logo.png"
+              alt={`${brandName} logo`}
+              width={64}
+              height={64}
+              className="w-14 h-14 md:w-16 md:h-16 object-contain"
+              priority
+            />
             {brandName}
           </Link>
           <div className="hidden md:flex gap-8 flex-1">
@@ -223,8 +232,15 @@ export function Navbar() {
             <Link
               href="/"
               onClick={closeMobile}
-              className="font-serif text-[22px] font-semibold text-site-text tracking-[0.18em] no-underline uppercase"
+              className="font-serif text-[22px] font-semibold text-site-text tracking-[0.18em] no-underline uppercase flex items-center gap-2"
             >
+              <Image
+                src="/thickapparel-logo.png"
+                alt={`${brandName} logo`}
+                width={64}
+                height={64}
+                className="w-14 h-14 object-contain"
+              />
               {brandName}
             </Link>
             <button
