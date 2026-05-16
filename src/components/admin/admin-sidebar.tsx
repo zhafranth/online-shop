@@ -62,7 +62,7 @@ const SECTIONS: NavSection[] = [
     label: "Sales",
     items: [
       { href: "/admin/orders", label: "Orders", icon: ShoppingBag, status: "ready" },
-      { href: "/admin/promo", label: "Promo", icon: BadgePercent, status: "soon" },
+      { href: "/admin/promo", label: "Promo", icon: BadgePercent, status: "ready" },
     ],
   },
   {
@@ -77,7 +77,7 @@ const SECTIONS: NavSection[] = [
     label: "People",
     items: [
       { href: "/admin/users", label: "Customers", icon: Users, status: "ready" },
-      { href: "/admin/admins", label: "Admins", icon: ShieldCheck, status: "soon" },
+      { href: "/admin/admins", label: "Admins", icon: ShieldCheck, status: "ready" },
     ],
   },
   {
