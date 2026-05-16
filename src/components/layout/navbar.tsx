@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, Heart, ShoppingBag, Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
 import { useCartStore } from "@/stores/cart-store";
+import { useMembershipStore } from "@/stores/membership-store";
 
 type NavLink =
   | { label: string; href: string }
@@ -12,30 +13,40 @@ type NavLink =
       children: { label: string; href: string }[];
     };
 
-const NAV_LINKS: NavLink[] = [
-  { label: "Product", href: "/catalog" },
-  {
-    label: "Fashiontaiment",
-    eyebrow: "Editorial",
-    children: [
-      { label: "Tips Mix & Match", href: "/magazine?category=tips-mix-match" },
-      { label: "Fashion News", href: "/magazine?category=fashion-news" },
-      { label: "Education", href: "/magazine?category=education" },
-    ],
-  },
-  {
-    label: "Membership",
-    eyebrow: "Komunitas",
-    children: [
-      { label: "Program Agent", href: "/membership/program-agent" },
-      { label: "Reseller Online", href: "/membership/reseller-online" },
-      { label: "Titip Jual", href: "/membership/titip-jual" },
-    ],
-  },
-];
-
 export function Navbar() {
   const totalItems = useCartStore((state) => state.totalItems());
+  const membershipPrograms = useMembershipStore((s) => s.programs);
+
+  const NAV_LINKS = useMemo<NavLink[]>(() => {
+    const links: NavLink[] = [
+      { label: "Product", href: "/catalog" },
+      {
+        label: "Fashiontaiment",
+        eyebrow: "Editorial",
+        children: [
+          { label: "Tips Mix & Match", href: "/magazine?category=tips-mix-match" },
+          { label: "Fashion News", href: "/magazine?category=fashion-news" },
+          { label: "Education", href: "/magazine?category=education" },
+        ],
+      },
+    ];
+
+    const visiblePrograms = membershipPrograms.filter(
+      (p) => p.status !== "inactive",
+    );
+    if (visiblePrograms.length > 0) {
+      links.push({
+        label: "Membership",
+        eyebrow: "Komunitas",
+        children: visiblePrograms.map((p) => ({
+          label: `${p.title} ${p.titleAccent}`.trim(),
+          href: `/membership/${p.id}`,
+        })),
+      });
+    }
+
+    return links;
+  }, [membershipPrograms]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);

@@ -40,6 +40,7 @@ const SECTION_LABELS: Record<string, string> = {
 function deriveTitle(pathname: string): string {
   if (TITLES[pathname]) return TITLES[pathname];
   if (pathname.startsWith("/admin/products/") && pathname.endsWith("/edit")) return "Edit Produk";
+  if (pathname.startsWith("/admin/membership/") && pathname.endsWith("/edit")) return "Edit Membership";
   if (pathname.startsWith("/admin/orders/")) return "Detail Order";
   return "Admin";
 }

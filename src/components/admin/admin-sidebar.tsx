@@ -54,7 +54,7 @@ const SECTIONS: NavSection[] = [
     label: "Content",
     items: [
       { href: "/admin/magazine", label: "Magazine", icon: Newspaper, status: "ready" },
-      { href: "/admin/membership", label: "Membership", icon: Crown, status: "soon" },
+      { href: "/admin/membership", label: "Membership", icon: Crown, status: "ready" },
       { href: "/admin/home", label: "Home & Banner", icon: LayoutTemplate, status: "soon" },
     ],
   },
@@ -70,7 +70,7 @@ const SECTIONS: NavSection[] = [
     items: [
       { href: "/admin/shipping", label: "Shipping", icon: Truck, status: "ready" },
       { href: "/admin/payment", label: "Payment", icon: CreditCard, status: "ready" },
-      { href: "/admin/size-guide", label: "Size Guide", icon: Ruler, status: "soon" },
+      { href: "/admin/size-guide", label: "Size Guide", icon: Ruler, status: "ready" },
     ],
   },
   {

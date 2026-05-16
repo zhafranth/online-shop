@@ -1,20 +1,30 @@
+"use client";
+
+import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toast } from "@/components/ui/toast";
 import { MembershipHero } from "@/components/membership/membership-hero";
+import { useMembershipStore } from "@/stores/membership-store";
 
 export default function ResellerOnlinePage() {
+  const program = useMembershipStore((s) =>
+    s.programs.find((p) => p.id === "reseller-online"),
+  );
+
+  if (!program || program.status === "inactive") notFound();
+
   return (
     <div className="min-h-screen pt-[72px] animate-fade-up">
       <Navbar />
       <MembershipHero
-        eyebrow="Membership"
-        title="Reseller"
-        titleAccent="Online"
-        description="Jual koleksi kami dari mana saja. Kami menyiapkan inventaris, materi pemasaran, dan dukungan pengiriman — Anda fokus pada audiens dan cerita."
-        image="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1400&q=80"
-        imageCaption="Studio packaging · 2026"
-        bannerText="Reseller Online · Pendaftaran Dibuka Akhir 2026"
+        eyebrow={program.eyebrow}
+        title={program.title}
+        titleAccent={program.titleAccent}
+        description={program.description}
+        image={program.image}
+        imageCaption={program.imageCaption}
+        bannerText={program.bannerText}
       />
       <Footer />
       <Toast />
