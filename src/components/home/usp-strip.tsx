@@ -1,5 +1,6 @@
 "use client";
 
+import { useShallow } from "zustand/react/shallow";
 import { useHomeContentStore } from "@/stores/home-content-store";
 
 const MD_COLS: Record<number, string> = {
@@ -11,8 +12,8 @@ const MD_COLS: Record<number, string> = {
 };
 
 export function UspStrip() {
-  const items = useHomeContentStore((s) =>
-    [...s.content.uspItems].sort((a, b) => a.order - b.order),
+  const items = useHomeContentStore(
+    useShallow((s) => [...s.content.uspItems].sort((a, b) => a.order - b.order)),
   );
   const enabled = useHomeContentStore((s) => s.content.visibility.showUsp);
 

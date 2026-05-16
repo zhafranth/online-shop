@@ -3,6 +3,7 @@
 import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useShallow } from "zustand/react/shallow";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toast } from "@/components/ui/toast";
@@ -92,7 +93,7 @@ export default function ArticleDetailPage({
   const { slug } = use(params);
   const router = useRouter();
   const article = useMagazineStore((s) => s.getBySlug(slug));
-  const related = useMagazineStore((s) => s.getRelated(slug, 3));
+  const related = useMagazineStore(useShallow((s) => s.getRelated(slug, 3)));
 
   if (!article) {
     return (

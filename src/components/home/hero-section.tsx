@@ -3,13 +3,14 @@
 import Image from "next/image";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useShallow } from "zustand/react/shallow";
 import { useHomeContentStore } from "@/stores/home-content-store";
 
 const isUnsplash = (s: string) => /^https?:\/\/images\.unsplash\.com\//i.test(s);
 
 export function HeroSection() {
-  const slides = useHomeContentStore((s) =>
-    [...s.content.heroSlides].sort((a, b) => a.order - b.order),
+  const slides = useHomeContentStore(
+    useShallow((s) => [...s.content.heroSlides].sort((a, b) => a.order - b.order)),
   );
   const enabled = useHomeContentStore((s) => s.content.visibility.showHero);
 

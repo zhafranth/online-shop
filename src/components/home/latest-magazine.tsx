@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useShallow } from "zustand/react/shallow";
 import { useMagazineStore } from "@/stores/magazine-store";
 import { useHomeContentStore } from "@/stores/home-content-store";
 import { ArticleCard } from "@/components/magazine/article-card";
@@ -9,7 +10,7 @@ export function LatestMagazine() {
   const enabled = useHomeContentStore(
     (s) => s.content.visibility.showLatestMagazine,
   );
-  const latest = useMagazineStore((s) => s.articles.slice(0, 3));
+  const latest = useMagazineStore(useShallow((s) => s.articles.slice(0, 3)));
   if (!enabled || latest.length === 0) return null;
   return (
     <section className="py-14 md:py-20 bg-cream border-t border-site-border">
