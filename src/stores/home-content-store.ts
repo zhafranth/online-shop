@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type {
-  EditorsPicksConfig,
+  BestSellerConfig,
   HeroSlide,
   HomeContent,
   HomeVisibility,
@@ -47,16 +47,15 @@ const USP_SEED: UspItem[] = [
   { id: "u4", icon: "⭐", title: "Kualitas Terjamin", sub: "Garansi kepuasan", order: 4 },
 ];
 
-const EDITORS_PICKS_SEED: EditorsPicksConfig = {
-  heroProductId: 2,
-  smallProductIds: [3, 4],
+const BEST_SELLER_SEED: BestSellerConfig = {
+  productIds: [2, 3, 4, 5],
 };
 
 const VISIBILITY_SEED: HomeVisibility = {
   showHero: true,
   showTicker: true,
   showUsp: true,
-  showEditorsPicks: true,
+  showBestSeller: true,
   showLatestMagazine: true,
   showNewArrivals: true,
   showGenderBanner: false,
@@ -66,7 +65,7 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
   heroSlides: HERO_SEED,
   tickerText: TICKER_SEED,
   uspItems: USP_SEED,
-  editorsPicks: EDITORS_PICKS_SEED,
+  bestSeller: BEST_SELLER_SEED,
   visibility: VISIBILITY_SEED,
 };
 
@@ -75,7 +74,7 @@ interface HomeContentStore {
   setHeroSlides: (slides: HeroSlide[]) => void;
   setTickerText: (text: string) => void;
   setUspItems: (items: UspItem[]) => void;
-  setEditorsPicks: (picks: EditorsPicksConfig) => void;
+  setBestSeller: (picks: BestSellerConfig) => void;
   setVisibility: (patch: Partial<HomeVisibility>) => void;
   reset: () => void;
 }
@@ -101,8 +100,8 @@ export const useHomeContentStore = create<HomeContentStore>()(
             uspItems: items.map((it, i) => ({ ...it, order: i + 1 })),
           },
         })),
-      setEditorsPicks: (picks) =>
-        set((s) => ({ content: { ...s.content, editorsPicks: picks } })),
+      setBestSeller: (picks) =>
+        set((s) => ({ content: { ...s.content, bestSeller: picks } })),
       setVisibility: (patch) =>
         set((s) => ({
           content: {
@@ -114,7 +113,9 @@ export const useHomeContentStore = create<HomeContentStore>()(
     }),
     {
       name: "thickapparel-home-content",
+      version: 2,
       partialize: (s) => ({ content: s.content }),
+      migrate: () => ({ content: DEFAULT_HOME_CONTENT }),
     },
   ),
 );

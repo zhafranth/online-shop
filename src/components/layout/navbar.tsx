@@ -188,16 +188,13 @@ export function Navbar() {
               onMouseEnter={() => setHoverIndex(index)}
             >
               <div className="max-w-[1280px] mx-auto px-10 py-8">
-                <div className="text-[10px] tracking-[0.22em] uppercase text-site-gray mb-5 font-medium">
-                  {link.eyebrow}
-                </div>
                 <div className="grid grid-cols-3 gap-2 max-w-[680px]">
                   {link.children.map((child) => (
                     <Link
                       key={child.label}
                       href={child.href}
                       onClick={() => setHoverIndex(null)}
-                      className="group flex items-center justify-between py-3.5 pr-4 pl-2 border-t border-site-border no-underline text-site-text transition-colors hover:bg-cream"
+                      className="group flex items-center justify-between py-3.5 pr-4 pl-2 no-underline text-site-text transition-colors hover:bg-cream"
                     >
                       <span className="font-serif text-[18px] leading-tight">
                         {child.label}

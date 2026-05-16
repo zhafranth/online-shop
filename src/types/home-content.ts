@@ -17,22 +17,21 @@ export interface HomeVisibility {
   showHero: boolean;
   showTicker: boolean;
   showUsp: boolean;
-  showEditorsPicks: boolean;
+  showBestSeller: boolean;
   showLatestMagazine: boolean;
   showNewArrivals: boolean;
   showGenderBanner: boolean;
 }
 
-export interface EditorsPicksConfig {
-  heroProductId: number | null;
-  smallProductIds: [number | null, number | null];
+export interface BestSellerConfig {
+  productIds: [number | null, number | null, number | null, number | null];
 }
 
 export interface HomeContent {
   heroSlides: HeroSlide[];
   tickerText: string;
   uspItems: UspItem[];
-  editorsPicks: EditorsPicksConfig;
+  bestSeller: BestSellerConfig;
   visibility: HomeVisibility;
 }
 
@@ -40,5 +39,5 @@ export type HomeSectionKey =
   | "hero"
   | "ticker"
   | "usp"
-  | "editorsPicks"
+  | "bestSeller"
   | "visibility";

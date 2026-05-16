@@ -10,7 +10,7 @@ export function LatestMagazine() {
   const enabled = useHomeContentStore(
     (s) => s.content.visibility.showLatestMagazine,
   );
-  const latest = useMagazineStore(useShallow((s) => s.articles.slice(0, 3)));
+  const latest = useMagazineStore(useShallow((s) => s.articles.slice(0, 5)));
   if (!enabled || latest.length === 0) return null;
   return (
     <section className="py-14 md:py-20 bg-cream border-t border-site-border">
@@ -20,7 +20,7 @@ export function LatestMagazine() {
             <div className="text-[11px] tracking-[0.18em] uppercase text-site-gray mb-2">
               Fashiontaiment
             </div>
-            <h2 className="font-serif font-normal">Dari Magazine</h2>
+            <h2 className="font-serif font-normal">Latest Update</h2>
           </div>
           <Link
             href="/magazine"
@@ -29,9 +29,9 @@ export function LatestMagazine() {
             Semua Artikel →
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-5 gap-y-10">
           {latest.map((article) => (
-            <ArticleCard key={article.slug} article={article} />
+            <ArticleCard key={article.slug} article={article} compact />
           ))}
         </div>
       </div>

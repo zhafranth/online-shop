@@ -15,7 +15,7 @@ import type { HomeSectionKey } from "@/types/home-content";
 import { HeroEditor } from "@/components/admin/home/hero-editor";
 import { TickerEditor } from "@/components/admin/home/ticker-editor";
 import { UspEditor } from "@/components/admin/home/usp-editor";
-import { EditorsPicksEditor } from "@/components/admin/home/editors-picks-editor";
+import { BestSellerEditor } from "@/components/admin/home/best-seller-editor";
 import { VisibilityEditor } from "@/components/admin/home/visibility-editor";
 
 type Entry = {
@@ -45,9 +45,9 @@ const TOC: Entry[] = [
     icon: Sparkles,
   },
   {
-    key: "editorsPicks",
-    label: "Editor's Picks",
-    caption: "Tiga produk kurasi.",
+    key: "bestSeller",
+    label: "Best Seller",
+    caption: "Empat produk best seller.",
     icon: Star,
   },
   {
@@ -82,8 +82,8 @@ export default function AdminHomeContentPage() {
         return <TickerEditor {...props} />;
       case "usp":
         return <UspEditor {...props} />;
-      case "editorsPicks":
-        return <EditorsPicksEditor {...props} />;
+      case "bestSeller":
+        return <BestSellerEditor {...props} />;
       case "visibility":
         return <VisibilityEditor {...props} />;
     }
@@ -126,8 +126,8 @@ export default function AdminHomeContentPage() {
           },
           { k: "USP Items", v: String(content.uspItems.length).padStart(2, "0") },
           {
-            k: "Editor's Picks",
-            v: `${content.editorsPicks.heroProductId ? "01" : "—"}+${content.editorsPicks.smallProductIds.filter(Boolean).length}`,
+            k: "Best Seller",
+            v: `${String(content.bestSeller.productIds.filter((id) => id !== null).length).padStart(2, "0")}/04`,
           },
           {
             k: "Section Aktif",

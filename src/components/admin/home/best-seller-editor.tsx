@@ -9,11 +9,9 @@ import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/types";
 import { SectionShell } from "./section-shell";
 
-type SlotKey = "hero" | "small1" | "small2";
-
 interface ProductPickerProps {
   label: string;
-  slot: SlotKey;
+  slotIndex: number;
   selectedId: number | null;
   excludedIds: (number | null)[];
   products: Product[];
@@ -22,7 +20,7 @@ interface ProductPickerProps {
 
 function ProductPicker({
   label,
-  slot,
+  slotIndex,
   selectedId,
   excludedIds,
   products,
@@ -61,7 +59,7 @@ function ProductPicker({
       <div className="text-[10px] font-semibold tracking-[0.16em] text-site-gray uppercase mb-2 flex items-center justify-between">
         <span>{label}</span>
         <span className="font-mono normal-case tracking-tight text-site-gray-light">
-          {slot === "hero" ? "big card" : `slot ${slot.slice(-1)}`}
+          slot {slotIndex + 1}
         </span>
       </div>
       <button
@@ -188,15 +186,22 @@ function ProductPicker({
   );
 }
 
-export function EditorsPicksEditor({
+type BestSellerConfigIds = [
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+];
+
+export function BestSellerEditor({
   index,
   total,
 }: {
   index: number;
   total: number;
 }) {
-  const config = useHomeContentStore((s) => s.content.editorsPicks);
-  const setEditorsPicks = useHomeContentStore((s) => s.setEditorsPicks);
+  const config = useHomeContentStore((s) => s.content.bestSeller);
+  const setBestSeller = useHomeContentStore((s) => s.setBestSeller);
   const products = useProductStore((s) => s.products);
 
   const [draft, setDraft] = useState(config);
@@ -208,61 +213,44 @@ export function EditorsPicksEditor({
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(config);
 
-  const setSlot = (slot: SlotKey, id: number | null) => {
+  const setSlot = (slotIndex: number, id: number | null) => {
     setDraft((d) => {
-      if (slot === "hero") return { ...d, heroProductId: id };
-      const idx = slot === "small1" ? 0 : 1;
-      const small: [number | null, number | null] = [...d.smallProductIds];
-      small[idx] = id;
-      return { ...d, smallProductIds: small };
+      const next: BestSellerConfigIds = [...d.productIds] as BestSellerConfigIds;
+      next[slotIndex] = id;
+      return { productIds: next };
     });
   };
 
-  const heroProduct = products.find((p) => p.id === draft.heroProductId);
-  const small1 = products.find((p) => p.id === draft.smallProductIds[0]);
-  const small2 = products.find((p) => p.id === draft.smallProductIds[1]);
+  const filledCount = draft.productIds.filter((id) => id !== null).length;
 
   return (
     <SectionShell
       index={index}
       total={total}
       eyebrow="Curation · Featured"
-      title="Editor's Picks"
-      description="Tiga slot pilihan editor: 1 big card + 2 small. Picker mencari berdasarkan nama atau kategori. ID produk disimpan, bukan index — aman saat urutan berubah."
-      counterLabel="03 slot"
+      title="Best Seller"
+      description="Empat slot produk best seller, tampil dalam grid 4 kolom di storefront. Picker mencari berdasarkan nama atau kategori. ID produk disimpan, bukan index — aman saat urutan berubah."
+      counterLabel={`${String(filledCount).padStart(2, "0")}/04 slot`}
       dirty={dirty}
       savedAt={savedAt}
       onSave={() => {
-        setEditorsPicks(draft);
+        setBestSeller(draft);
         setSavedAt(Date.now());
       }}
       onDiscard={() => setDraft(config)}
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <ProductPicker
-          label="Big Card"
-          slot="hero"
-          selectedId={draft.heroProductId}
-          excludedIds={draft.smallProductIds}
-          products={products}
-          onChange={(id) => setSlot("hero", id)}
-        />
-        <ProductPicker
-          label="Slot 1"
-          slot="small1"
-          selectedId={draft.smallProductIds[0]}
-          excludedIds={[draft.heroProductId, draft.smallProductIds[1]]}
-          products={products}
-          onChange={(id) => setSlot("small1", id)}
-        />
-        <ProductPicker
-          label="Slot 2"
-          slot="small2"
-          selectedId={draft.smallProductIds[1]}
-          excludedIds={[draft.heroProductId, draft.smallProductIds[0]]}
-          products={products}
-          onChange={(id) => setSlot("small2", id)}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        {draft.productIds.map((id, i) => (
+          <ProductPicker
+            key={i}
+            label={`Slot ${i + 1}`}
+            slotIndex={i}
+            selectedId={id}
+            excludedIds={draft.productIds.filter((_, j) => j !== i)}
+            products={products}
+            onChange={(next) => setSlot(i, next)}
+          />
+        ))}
       </div>
 
       {/* Mini layout preview */}
@@ -270,19 +258,20 @@ export function EditorsPicksEditor({
         <div className="text-[10px] tracking-[0.22em] uppercase text-site-gray mb-3">
           Layout Preview
         </div>
-        <div className="grid grid-cols-[1.5fr_1fr] gap-3 h-[280px]">
-          <PreviewCard product={heroProduct} big />
-          <div className="grid grid-rows-2 gap-3">
-            <PreviewCard product={small1} />
-            <PreviewCard product={small2} />
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 h-[260px]">
+          {draft.productIds.map((id, i) => (
+            <PreviewCard
+              key={i}
+              product={products.find((p) => p.id === id)}
+            />
+          ))}
         </div>
       </div>
     </SectionShell>
   );
 }
 
-function PreviewCard({ product, big }: { product?: Product; big?: boolean }) {
+function PreviewCard({ product }: { product?: Product }) {
   if (!product) {
     return (
       <div className="bg-cream border border-dashed border-site-border flex flex-col items-center justify-center text-site-gray-light">
@@ -299,13 +288,11 @@ function PreviewCard({ product, big }: { product?: Product; big?: boolean }) {
         src={product.image}
         alt={product.name}
         fill
-        sizes="(max-width: 768px) 100vw, 33vw"
+        sizes="(max-width: 768px) 50vw, 25vw"
         className="object-cover"
       />
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-        <div
-          className={`font-serif text-white leading-tight ${big ? "text-[19px]" : "text-[14px]"}`}
-        >
+        <div className="font-serif text-white leading-tight text-[14px]">
           {product.name}
         </div>
         <div className="text-[11px] text-white/80 mt-0.5">

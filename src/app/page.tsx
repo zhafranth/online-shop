@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Ticker } from "@/components/layout/ticker";
 import { HeroSection } from "@/components/home/hero-section";
-import { EditorsPicks } from "@/components/home/editors-picks";
+import { BestSeller } from "@/components/home/best-seller";
 import { GenderBanner } from "@/components/home/gender-banner";
 import { LatestMagazine } from "@/components/home/latest-magazine";
 import { NewArrivals } from "@/components/home/new-arrivals";
@@ -16,7 +16,7 @@ export default function HomePage() {
       <Ticker />
       <HeroSection />
       <NewArrivals />
-      <EditorsPicks />
+      <BestSeller />
       <GenderBanner />
       <LatestMagazine />
       <UspStrip />

@@ -31,9 +31,9 @@ const ROWS: Array<{
     hasEditor: false,
   },
   {
-    key: "showEditorsPicks",
-    label: "Editor's Picks",
-    description: "Tiga slot kurasi editor.",
+    key: "showBestSeller",
+    label: "Best Seller",
+    description: "Empat slot produk best seller.",
     hasEditor: true,
   },
   {
@@ -163,7 +163,7 @@ export function VisibilityEditor({
             { k: "showTicker", label: "Ticker", h: "h-3" },
             { k: "showHero", label: "Hero", h: "h-20" },
             { k: "showNewArrivals", label: "New Arrivals", h: "h-12" },
-            { k: "showEditorsPicks", label: "Editor's Picks", h: "h-14" },
+            { k: "showBestSeller", label: "Best Seller", h: "h-14" },
             { k: "showLatestMagazine", label: "Latest Magazine", h: "h-10" },
             { k: "showUsp", label: "USP", h: "h-6" },
             { k: "showGenderBanner", label: "Gender Banner", h: "h-10" },

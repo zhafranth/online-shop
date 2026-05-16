@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   title: "ThickApparel - Mode Terpilih Untuk Semua",
   description:
     "Koleksi fashion premium dengan kualitas terbaik. Kemeja, dress, outer, dan aksesoris untuk pria & wanita.",
+  icons: {
+    icon: "/thickapparel-icon.ico",
+    shortcut: "/thickapparel-icon.ico",
+  },
 };
 
 export default function RootLayout({
