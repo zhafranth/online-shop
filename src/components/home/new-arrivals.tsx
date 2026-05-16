@@ -1,12 +1,21 @@
+"use client";
+
 import Link from "next/link";
-import { PRODUCTS } from "@/lib/constants";
 import { colorHex, discountPercent, formatPrice } from "@/lib/utils";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useProductStore } from "@/stores/product-store";
+import { useHomeContentStore } from "@/stores/home-content-store";
 
 export function NewArrivals() {
-  const newItems = PRODUCTS.filter((p) => p.badge === "NEW").slice(0, 4);
+  const enabled = useHomeContentStore(
+    (s) => s.content.visibility.showNewArrivals,
+  );
+  const products = useProductStore((s) => s.products);
+  if (!enabled) return null;
+  const newItems = products.filter((p) => p.badge === "NEW").slice(0, 4);
+  if (newItems.length === 0) return null;
   return (
     <section className="py-14 md:py-20 bg-cream">
       <div className="container-site">

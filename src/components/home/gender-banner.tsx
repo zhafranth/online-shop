@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { Button } from "@/components/ui/button";
+import { useHomeContentStore } from "@/stores/home-content-store";
 
 const BANNERS = [
   {
@@ -20,6 +23,10 @@ const BANNERS = [
 ];
 
 export function GenderBanner() {
+  const enabled = useHomeContentStore(
+    (s) => s.content.visibility.showGenderBanner,
+  );
+  if (!enabled) return null;
   return (
     <section className="grid grid-cols-1 md:grid-cols-2">
       {BANNERS.map(({ label, desc, cat, overlay, image }) => (

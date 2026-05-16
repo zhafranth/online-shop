@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { MaintenanceGate } from "@/components/layout/maintenance-gate";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -30,7 +31,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${cormorant.variable} ${dmSans.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        <MaintenanceGate />
+      </body>
     </html>
   );
 }

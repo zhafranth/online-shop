@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Search, Heart, ShoppingBag, Menu, X, ChevronDown, ArrowUpRight } from "lucide-react";
 import { useCartStore } from "@/stores/cart-store";
 import { useMembershipStore } from "@/stores/membership-store";
+import { useSettingsStore } from "@/stores/settings-store";
 
 type NavLink =
   | { label: string; href: string }
@@ -16,6 +17,7 @@ type NavLink =
 export function Navbar() {
   const totalItems = useCartStore((state) => state.totalItems());
   const membershipPrograms = useMembershipStore((s) => s.programs);
+  const brandName = useSettingsStore((s) => s.settings.branding.brandName);
 
   const NAV_LINKS = useMemo<NavLink[]>(() => {
     const links: NavLink[] = [
@@ -82,7 +84,7 @@ export function Navbar() {
             href="/"
             className="font-serif text-[20px] md:text-[22px] font-semibold text-site-text tracking-[0.18em] md:mr-12 shrink-0 no-underline uppercase"
           >
-            ThickApparel
+            {brandName}
           </Link>
           <div className="hidden md:flex gap-8 flex-1">
             {NAV_LINKS.map((link, index) => {
@@ -223,7 +225,7 @@ export function Navbar() {
               onClick={closeMobile}
               className="font-serif text-[22px] font-semibold text-site-text tracking-[0.18em] no-underline uppercase"
             >
-              ThickApparel
+              {brandName}
             </Link>
             <button
               type="button"

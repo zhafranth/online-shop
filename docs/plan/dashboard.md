@@ -18,10 +18,10 @@ Tracking dokumen untuk pengembangan menu admin dashboard yang masih bertanda **S
 | Payment          | ready          | ✅ Done          | [payment.md](../prd/payment.md)                  |
 | Shipping         | ready          | ✅ Done          | [shipping.md](../prd/shipping.md)                |
 | Magazine         | ready          | ✅ Done          | [magazine.md](../prd/magazine.md)                |
-| Membership       | soon           | ⏳ Not Started   | [membership.md](../prd/membership.md)            |
-| Size Guide       | soon           | ⏳ Not Started   | [size-guide.md](../prd/size-guide.md)            |
-| Settings         | soon           | ⏳ Not Started   | [settings.md](../prd/settings.md)                |
-| Home & Banner    | soon           | ⏳ Not Started   | [home-content.md](../prd/home-content.md)        |
+| Membership       | ready          | ✅ Done          | [membership.md](../prd/membership.md)            |
+| Size Guide       | ready          | ✅ Done          | [size-guide.md](../prd/size-guide.md)            |
+| Settings         | ready          | ✅ Done          | [settings.md](../prd/settings.md)                |
+| Home & Banner    | ready          | ✅ Done          | [home-content.md](../prd/home-content.md)        |
 | Admins           | soon           | ⏳ Not Started   | [admin-users.md](../prd/admin-users.md)          |
 | Promo            | soon           | ⏳ Not Started   | [promo.md](../prd/promo.md)                      |
 
@@ -104,7 +104,7 @@ Menu yang fitur-nya sudah dipakai storefront tetapi belum ada UI admin-nya. Urut
 
 Setelah Fase 1 selesai dan stabil, lanjut ke peningkatan kontrol konten & operasional.
 
-### 6. Size Guide ⏳
+### 6. Size Guide ✅
 
 - **PRD:** [`docs/prd/size-guide.md`](../prd/size-guide.md)
 - **Kenapa duluan di Fase 2:** paling sederhana, satu halaman tabel + form.
@@ -112,7 +112,7 @@ Setelah Fase 1 selesai dan stabil, lanjut ke peningkatan kontrol konten & operas
 - **Type & store:** `src/types/size-guide.ts`, `src/stores/size-guide-store.ts` (persist key `thickapparel-size-guide`).
 - **Integrasi:** ganti hardcode `SIZE_GUIDE` di `src/lib/constants.ts` → store.
 
-### 7. Settings ⏳
+### 7. Settings ✅
 
 - **PRD:** [`docs/prd/settings.md`](../prd/settings.md)
 - **Kenapa kedua di Fase 2:** independen, section banyak (Branding, Contact, Social, Footer, SEO, Integrations, Maintenance) tapi tiap section sederhana.
@@ -121,7 +121,7 @@ Setelah Fase 1 selesai dan stabil, lanjut ke peningkatan kontrol konten & operas
 - **Integrasi:** footer + meta tags + logo + maintenance mode konsumsi store (PRD §5.4–§5.7).
 - **Catatan:** maintenance mode (§5.7) → middleware atau guard di `layout.tsx` storefront — cek breaking change.
 
-### 8. Home Content ⏳
+### 8. Home Content ✅
 
 - **PRD:** [`docs/prd/home-content.md`](../prd/home-content.md)
 - **Kenapa ketiga:** butuh refactor komponen home jadi data-driven (Hero, Ticker, USP, Editor's Picks).
@@ -189,3 +189,5 @@ _Tambah entri di sini saat ada keputusan / blocker / revisi PRD selama implement
 - 2026-05-15 — Categories — Implementasi Fase 1 #1 selesai. `Product.category` di-loose jadi `string`, seed `PRODUCTS` di `constants.ts` dilowercase, dan `product-store` ditambah `version: 1` + `migrate` agar localStorage existing ikut. Reorder pakai tombol arrow (drag handle ditunda). Catalog filter + gender banner + product form sudah baca dari `useCategoryStore`. Drag-and-drop, hierarki nested, dan bulk reassign tetap di future enhancements.
 - 2026-05-16 — Shipping — Implementasi Fase 1 #3 selesai. `admin-shipping-store` baru dengan persist key `thickapparel-admin-shipping` menyimpan list kurir + warehouse origin (seed dari `SHIPPING_OPTIONS` & `WAREHOUSE` di `constants.ts`). Page `/admin/shipping` pakai dua tab (Kurir + Gudang Asal) dengan style editorial mirror dari Payment. `courier-options.tsx` di checkout sekarang baca langsung dari store (tarif flat per PRD §4 Out of Scope: "Tarif dinamis per zona") — `shippingService.calculateCost` mock dilepas dari flow ini. Empty-state guard saat tidak ada kurir enabled. Konstanta `SHIPPING_OPTIONS`/`WAREHOUSE` dipertahankan sesuai opsi PRD §9.
 - 2026-05-16 — Magazine — Implementasi Fase 1 #4 selesai. `magazine-store` baru (persist key `thickapparel-magazine`) hydrate dari `ARTICLES`; aksi CRUD + `setFeatured` exclusive (auto-unset featured lain). Route admin: list (`/admin/magazine`), create (`/admin/magazine/new`), edit (`/admin/magazine/[slug]/edit`). Komponen `article-form` punya block repeater (paragraph/heading/image/quote) dengan reorder + delete + auto-fill description. Slug auto dari judul, immutable di mode edit. Storefront (`/magazine`, `/magazine/[slug]`, `LatestMagazine`) sekarang client component baca dari store — `generateStaticParams` dilepas karena data dinamis dari localStorage. Tanggal disimpan tetap sebagai display string id-ID ("12 Mei 2026"), input via `<input type="date">` lalu di-format dengan `Intl.DateTimeFormat("id-ID")`.
+- 2026-05-16 — Settings — Implementasi Fase 2 #7 selesai. `settings-store` baru (persist key `thickapparel-settings`) menyimpan 7 section: branding, contact, social, footer, seo, integrations, maintenance. Halaman `/admin/settings` pakai layout dossier — TOC rail kiri (sticky) + section cards kanan, masing-masing punya draft state + dirty/save lifecycle terpisah (lihat `components/admin/settings/section-shell.tsx`). Footer & Navbar storefront sekarang konsumsi `useSettingsStore` (brand name, about copy, sosial, copyright, newsletter heading); footer auto-hide kanal sosial yang URL-nya kosong. Maintenance mode di-implement via `<MaintenanceGate>` di root `layout.tsx` — overlay full-screen client-side cek `pathname` (skip `/admin/*` saat `allowAdmin`). Integrations section punya secret reveal/copy + disclaimer prototype localStorage; SEO section punya SERP preview + OG card preview. Metadata `<title>`/`<meta>` di `layout.tsx` masih static fallback (PRD §10 dependency catat next-head dynamic enhancement → future). Section "Reset Default" per-section + global "Reset Semua" via ConfirmModal.
+- 2026-05-16 — Home Content — Implementasi Fase 2 #8 selesai. `home-content-store` baru (persist key `thickapparel-home-content`) menyimpan: heroSlides (max 6), tickerText, uspItems (2–6), editorsPicks (id-based, bukan index!), visibility (7 toggle). Halaman `/admin/home` pakai composer layout — TOC kiri + 5 section editor (`components/admin/home/*`): Hero (URL repeater + thumbnail preview + reorder), Ticker (textarea + live marquee preview), USP (icon+title+sub repeater + grid preview), Editor's Picks (3 product picker dropdown searchable, exclude-self, stock warning + layout preview), Visibility (toggle list + wireframe preview). Storefront refactor: `hero-section`, `ticker`, `usp-strip`, `editors-picks`, `new-arrivals`, `latest-magazine`, `gender-banner` semua jadi client component baca dari store; `editors-picks.tsx` pindah dari index access (`PRODUCTS[1]`) ke `useProductStore.find(id)` dengan graceful fallback (placeholder card jika produk tidak ditemukan). `gender-banner` ditambah ke `app/page.tsx` agar bisa di-toggle (default visibility off). Tailwind `md:grid-cols-{n}` dynamic di USP strip pakai static lookup map agar JIT scanner pickup.
