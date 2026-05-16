@@ -1,18 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { shippingService } from "@/services/raja-ongkir";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useCartStore } from "@/stores/cart-store";
 import { useShippingStore } from "@/stores/shipping-store";
-import { DEFAULT_COURIER_CODES } from "@/lib/dummy/couriers";
-import { WAREHOUSE } from "@/lib/constants";
+import { useAdminShippingStore } from "@/stores/admin-shipping-store";
 import { formatPrice } from "@/lib/utils";
+import { etdLabel } from "@/types/shipping-admin";
 import type { ShippingOption } from "@/types/raja-ongkir";
 import { Button } from "@/components/ui/button";
-
-function formatEtd(etd: string): string {
-  return etd.replace(/\s*day$/i, " hari").replace("-", "–");
-}
 
 interface CourierOptionsProps {
   onBack: () => void;
@@ -25,28 +21,42 @@ export function CourierOptions({ onBack, onSubmit }: CourierOptionsProps) {
   const setOption = useShippingStore((s) => s.setOption);
   const totalWeight = useCartStore((s) => s.totalWeight());
 
-  const [options, setOptions] = useState<ShippingOption[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const warehouse = useAdminShippingStore((s) => s.warehouse);
+  const couriers = useAdminShippingStore((s) => s.couriers);
+
+  const options = useMemo<ShippingOption[]>(
+    () =>
+      [...couriers]
+        .filter((c) => c.enabled)
+        .sort((a, b) => a.order - b.order)
+        .map((c) => ({
+          name: c.label,
+          code: c.code,
+          service: c.code.toUpperCase(),
+          description: c.description || etdLabel(c.etdMin, c.etdMax),
+          cost: c.price,
+          etd:
+            c.etdMin === c.etdMax
+              ? `${c.etdMin} day`
+              : `${c.etdMin}-${c.etdMax} day`,
+        })),
+    [couriers],
+  );
+
   const [pickedKey, setPickedKey] = useState<string | null>(
     selectedOption ? `${selectedOption.code}-${selectedOption.service}` : null,
   );
 
+  // Drop a stale selection if its courier has been disabled / removed.
   useEffect(() => {
-    if (!address) return;
-    setLoading(true);
-    setError(null);
-    shippingService
-      .calculateCost({
-        originDistrictId: WAREHOUSE.districtId,
-        destinationDistrictId: address.districtId,
-        weight: Math.max(totalWeight, 100),
-        couriers: DEFAULT_COURIER_CODES,
-      })
-      .then((res) => setOptions(res.data))
-      .catch(() => setError("Gagal menghitung ongkir, coba lagi."))
-      .finally(() => setLoading(false));
-  }, [address, totalWeight]);
+    if (!selectedOption) return;
+    const stillAvailable = options.some(
+      (o) => o.code === selectedOption.code && o.service === selectedOption.service,
+    );
+    if (!stillAvailable) {
+      setPickedKey(null);
+    }
+  }, [options, selectedOption]);
 
   const handleSelect = (opt: ShippingOption) => {
     setOption(opt);
@@ -76,7 +86,10 @@ export function CourierOptions({ onBack, onSubmit }: CourierOptionsProps) {
       <div className="p-4 sm:p-5 space-y-4">
         <div className="text-xs text-site-gray flex flex-wrap gap-x-4 gap-y-1">
           <span>
-            Berat: <strong className="text-site-text">{(totalWeight / 1000).toFixed(2)} kg</strong>
+            Berat:{" "}
+            <strong className="text-site-text">
+              {(totalWeight / 1000).toFixed(2)} kg
+            </strong>
           </span>
           <span>
             Tujuan:{" "}
@@ -87,22 +100,25 @@ export function CourierOptions({ onBack, onSubmit }: CourierOptionsProps) {
           <span>
             Dari:{" "}
             <strong className="text-site-text">
-              {WAREHOUSE.districtName}, {WAREHOUSE.cityName}
+              {warehouse.districtName}, {warehouse.cityName}
             </strong>
           </span>
         </div>
 
-        {loading && (
-          <p className="text-sm text-site-gray py-4">Menghitung ongkir…</p>
-        )}
-
-        {error && (
-          <div className="px-3.5 py-2.5 text-[13px] bg-[#fef2f2] text-[#991b1b] border border-[#fecaca]">
-            {error}
+        {options.length === 0 ? (
+          <div className="px-4 py-8 bg-cream border border-dashed border-site-border text-center">
+            <p className="font-serif text-[18px] text-site-gray-dark mb-1">
+              Pengiriman belum dikonfigurasi.
+            </p>
+            <p className="text-[12.5px] text-site-gray">
+              Hubungi admin atau atur kurir di{" "}
+              <Link href="/admin/shipping" className="underline text-navy">
+                Pengaturan Pengiriman
+              </Link>
+              .
+            </p>
           </div>
-        )}
-
-        {!loading && !error && (
+        ) : (
           <div className="flex flex-col gap-2.5">
             {options.map((opt) => {
               const key = `${opt.code}-${opt.service}`;
@@ -124,14 +140,9 @@ export function CourierOptions({ onBack, onSubmit }: CourierOptionsProps) {
                     className="accent-[#0a0a0a] shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm">
-                      {opt.name}{" "}
-                      <span className="text-site-gray font-normal">
-                        — {opt.service}
-                      </span>
-                    </div>
+                    <div className="font-semibold text-sm">{opt.name}</div>
                     <div className="text-xs text-site-gray">
-                      {opt.description} · ETD {formatEtd(opt.etd)}
+                      {opt.description}
                     </div>
                   </div>
                   <div className="font-semibold text-sm text-navy shrink-0">
@@ -147,7 +158,10 @@ export function CourierOptions({ onBack, onSubmit }: CourierOptionsProps) {
           <Button variant="outline" onClick={onBack}>
             ← Ganti Alamat
           </Button>
-          <Button onClick={handleContinue} disabled={!selectedOption}>
+          <Button
+            onClick={handleContinue}
+            disabled={!selectedOption || options.length === 0}
+          >
             Lanjut: Review →
           </Button>
         </div>

@@ -8,7 +8,7 @@ import { ArticleCard } from "@/components/magazine/article-card";
 import { ArticleFeatured } from "@/components/magazine/article-featured";
 import { CategoryChips } from "@/components/magazine/category-chips";
 import { Button } from "@/components/ui/button";
-import { ARTICLES } from "@/lib/magazine-seeds";
+import { useMagazineStore } from "@/stores/magazine-store";
 import {
   MagazineCategorySlug,
   SLUG_TO_CATEGORY,
@@ -17,6 +17,7 @@ import {
 const PAGE_SIZE = 6;
 
 function MagazineContent() {
+  const articles = useMagazineStore((s) => s.articles);
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   const initialCategory: MagazineCategorySlug | "all" =
@@ -33,10 +34,10 @@ function MagazineContent() {
   }, [initialCategory]);
 
   const filtered = useMemo(() => {
-    if (active === "all") return ARTICLES;
+    if (active === "all") return articles;
     const category = SLUG_TO_CATEGORY[active];
-    return ARTICLES.filter((article) => article.category === category);
-  }, [active]);
+    return articles.filter((article) => article.category === category);
+  }, [articles, active]);
 
   const featured = filtered.find((article) => article.featured) ?? filtered[0];
   const rest = filtered.filter((article) => article.slug !== featured?.slug);

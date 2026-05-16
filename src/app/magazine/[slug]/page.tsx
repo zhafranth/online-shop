@@ -1,20 +1,15 @@
+"use client";
+
+import { use } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Toast } from "@/components/ui/toast";
 import { PlaceholderImage } from "@/components/ui/placeholder-image";
 import { ArticleCard } from "@/components/magazine/article-card";
-import {
-  ARTICLES,
-  getArticleBySlug,
-  getRelatedArticles,
-} from "@/lib/magazine-seeds";
+import { useMagazineStore } from "@/stores/magazine-store";
 import { MagazineBlock, CATEGORY_TO_SLUG } from "@/types/magazine";
-
-export async function generateStaticParams() {
-  return ARTICLES.map((article) => ({ slug: article.slug }));
-}
 
 function BodyBlock({
   block,
@@ -89,16 +84,41 @@ function BodyBlock({
   return null;
 }
 
-export default async function ArticleDetailPage({
+export default function ArticleDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-  const article = getArticleBySlug(slug);
-  if (!article) notFound();
+  const { slug } = use(params);
+  const router = useRouter();
+  const article = useMagazineStore((s) => s.getBySlug(slug));
+  const related = useMagazineStore((s) => s.getRelated(slug, 3));
 
-  const related = getRelatedArticles(slug, 3);
+  if (!article) {
+    return (
+      <div className="min-h-screen pt-[72px]">
+        <Navbar />
+        <div className="container-site py-24 text-center">
+          <div className="text-[10px] tracking-[0.22em] uppercase text-site-gray mb-3">
+            404 · Magazine
+          </div>
+          <h1 className="font-serif text-[40px] md:text-[56px] leading-tight mb-4">
+            Artikel tidak ditemukan
+          </h1>
+          <p className="text-[14px] text-site-gray mb-8">
+            Artikel ini mungkin sudah dipindahkan atau dihapus.
+          </p>
+          <button
+            onClick={() => router.push("/magazine")}
+            className="text-[12px] tracking-[0.16em] uppercase border-b border-site-text pb-1 text-site-text hover:text-site-gray-dark"
+          >
+            Kembali ke Magazine
+          </button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   let firstParagraphSeen = false;
 

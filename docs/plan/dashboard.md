@@ -15,9 +15,9 @@ Tracking dokumen untuk pengembangan menu admin dashboard yang masih bertanda **S
 | Orders           | ready          | ✅ Done          | —                                                |
 | Customers        | ready          | ✅ Done          | —                                                |
 | Categories       | ready          | ✅ Done          | [categories.md](../prd/categories.md)            |
-| Payment          | soon           | ⏳ Not Started   | [payment.md](../prd/payment.md)                  |
-| Shipping         | soon           | ⏳ Not Started   | [shipping.md](../prd/shipping.md)                |
-| Magazine         | soon           | ⏳ Not Started   | [magazine.md](../prd/magazine.md)                |
+| Payment          | ready          | ✅ Done          | [payment.md](../prd/payment.md)                  |
+| Shipping         | ready          | ✅ Done          | [shipping.md](../prd/shipping.md)                |
+| Magazine         | ready          | ✅ Done          | [magazine.md](../prd/magazine.md)                |
 | Membership       | soon           | ⏳ Not Started   | [membership.md](../prd/membership.md)            |
 | Size Guide       | soon           | ⏳ Not Started   | [size-guide.md](../prd/size-guide.md)            |
 | Settings         | soon           | ⏳ Not Started   | [settings.md](../prd/settings.md)                |
@@ -50,7 +50,7 @@ Menu yang fitur-nya sudah dipakai storefront tetapi belum ada UI admin-nya. Urut
   - Storefront catalog filter — baca daftar kategori dari store.
 - **Definisi Done:** semua checklist di PRD §8 (Acceptance Criteria) lulus.
 
-### 2. Payment ⏳
+### 2. Payment ✅
 
 - **PRD:** [`docs/prd/payment.md`](../prd/payment.md)
 - **Kenapa kedua:** independen, kompleksitas rendah, langsung dipakai checkout.
@@ -61,7 +61,7 @@ Menu yang fitur-nya sudah dipakai storefront tetapi belum ada UI admin-nya. Urut
 - **Integrasi checkout:** ganti hardcode `PAYMENT_OPTIONS` di `src/lib/constants.ts` → konsumsi dari store admin (PRD §5.3).
 - **Definisi Done:** Acceptance Criteria PRD §8 lulus, termasuk fallback bila store kosong (tetap ada minimal 1 metode default).
 
-### 3. Shipping ⏳
+### 3. Shipping ✅
 
 - **PRD:** [`docs/prd/shipping.md`](../prd/shipping.md)
 - **Kenapa ketiga:** independen, kompleksitas sedang (dua tab: Couriers + Warehouse Origin).
@@ -72,7 +72,7 @@ Menu yang fitur-nya sudah dipakai storefront tetapi belum ada UI admin-nya. Urut
 - **Integrasi checkout:** `SHIPPING_OPTIONS` jadi data-driven (PRD §5.3).
 - **Catatan:** sudah ada referensi integrasi RajaOngkir di `docs/raja-ongkir/` & `docs/integrate-raja-ongkir-dummy/` — tetap di luar scope Fase 1, hanya catat sebagai future enhancement bila PRD belum memerintahkan.
 
-### 4. Magazine ⏳
+### 4. Magazine ✅
 
 - **PRD:** [`docs/prd/magazine.md`](../prd/magazine.md)
 - **Kenapa keempat:** kompleks (body block repeater, slug, draft/publish), tetapi independen.
@@ -187,3 +187,5 @@ _Tambah entri di sini saat ada keputusan / blocker / revisi PRD selama implement
 ```
 
 - 2026-05-15 — Categories — Implementasi Fase 1 #1 selesai. `Product.category` di-loose jadi `string`, seed `PRODUCTS` di `constants.ts` dilowercase, dan `product-store` ditambah `version: 1` + `migrate` agar localStorage existing ikut. Reorder pakai tombol arrow (drag handle ditunda). Catalog filter + gender banner + product form sudah baca dari `useCategoryStore`. Drag-and-drop, hierarki nested, dan bulk reassign tetap di future enhancements.
+- 2026-05-16 — Shipping — Implementasi Fase 1 #3 selesai. `admin-shipping-store` baru dengan persist key `thickapparel-admin-shipping` menyimpan list kurir + warehouse origin (seed dari `SHIPPING_OPTIONS` & `WAREHOUSE` di `constants.ts`). Page `/admin/shipping` pakai dua tab (Kurir + Gudang Asal) dengan style editorial mirror dari Payment. `courier-options.tsx` di checkout sekarang baca langsung dari store (tarif flat per PRD §4 Out of Scope: "Tarif dinamis per zona") — `shippingService.calculateCost` mock dilepas dari flow ini. Empty-state guard saat tidak ada kurir enabled. Konstanta `SHIPPING_OPTIONS`/`WAREHOUSE` dipertahankan sesuai opsi PRD §9.
+- 2026-05-16 — Magazine — Implementasi Fase 1 #4 selesai. `magazine-store` baru (persist key `thickapparel-magazine`) hydrate dari `ARTICLES`; aksi CRUD + `setFeatured` exclusive (auto-unset featured lain). Route admin: list (`/admin/magazine`), create (`/admin/magazine/new`), edit (`/admin/magazine/[slug]/edit`). Komponen `article-form` punya block repeater (paragraph/heading/image/quote) dengan reorder + delete + auto-fill description. Slug auto dari judul, immutable di mode edit. Storefront (`/magazine`, `/magazine/[slug]`, `LatestMagazine`) sekarang client component baca dari store — `generateStaticParams` dilepas karena data dinamis dari localStorage. Tanggal disimpan tetap sebagai display string id-ID ("12 Mei 2026"), input via `<input type="date">` lalu di-format dengan `Intl.DateTimeFormat("id-ID")`.

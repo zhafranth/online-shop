@@ -1,9 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import { ARTICLES } from "@/lib/magazine-seeds";
+import { useMagazineStore } from "@/stores/magazine-store";
 import { ArticleCard } from "@/components/magazine/article-card";
 
 export function LatestMagazine() {
-  const latest = ARTICLES.slice(0, 3);
+  const latest = useMagazineStore((s) => s.articles.slice(0, 3));
   return (
     <section className="py-14 md:py-20 bg-cream border-t border-site-border">
       <div className="container-site">
